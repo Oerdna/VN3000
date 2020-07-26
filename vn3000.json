@@ -1,0 +1,12 @@
+{
+    "presetting": {
+        "dcBlock" : true,
+        "rfBlock" : true,
+        "highVoltageBlock" : true
+    },
+    "pressureSettings": {
+        "pressureTurbine" : 15,
+        "pressureIonVacuumi" : 0.1
+    },
+    "timeTurbine" : 1800
+}
