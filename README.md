@@ -1,6 +1,5 @@
 # VN3000
-Basic App for the older installation make by Rus - Ukr factory
-These installations are few in number and may have different firmware, as well as accessories.
+Basic App for the older installation make by Rus - Ukr factory. These installations are few in number and may have different firmware, as well as accessories.
 
 The installation is intended for research work on the sputtering of metals, semiconductors and dielectrics using DC or RF magnetrons.
 
