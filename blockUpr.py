@@ -2,20 +2,18 @@ import can
 
 
 class BlockUPR:
-    """
-    this class implements interaction with the control unit.
+    """this class implements interaction with the control unit.
     """
 
-    """
-    id - the frame identifier used for arbitration on the bus.
+    """id - the frame identifier used for arbitration on the bus.
     """
     id_blockUPR_command = 0x181E0E50
     id_blockUPR_measurements = 0x181E0E60
     id_blockUPR_events = 0x181E0E40
 
-    def __init__(self, bus):
-        """
-        variables are responsible for storing the pressure value.
+    def __init__(self, bus: object):
+        """Variables are responsible for storing the pressure value, I and U.
+        
         :pressure_ch:
             in chamber.
 
@@ -24,13 +22,15 @@ class BlockUPR:
 
         :pressure_pg:
             in the chamber, ionization sensor, work carefully.
-        """
-        self.pressure_ch = 0
-        self.pressure_pmp = 0
-        self.pressure_pg = 0
+        
+        :pg_current:
+            ionization gauge current.
+        
+        :ZQ1_voltage_mes & ZQ2_voltage_mes:
+            effective voltage applyed to the piezoelectric.
 
-        """
-        states of the working units of the block.
+        States of the working units of the block.
+
         :state_VE1:
             sink.
 
@@ -43,15 +43,24 @@ class BlockUPR:
         :state_PG:
             ionization sensor.
 
-        :state_ZQ1:
-            gas inlet 1.
-
-        :state_ZQ2:
-            gas inlet 2.
+        :state_ZQ1 & state_ZQ2:
+            gas inlet 1 and gas inlet 2.
 
         :state_sound:
             sound signal.
+
+        Seted voltage applied to the valve.
+
+        :voltage_ZQ1 & voltage_ZQ2:
+            valve ZQ1 & valve ZQ2.
         """
+        self.pressure_ch = 0
+        self.pressure_pmp = 0
+        self.pressure_pg = 0
+        self.mes_pg_current = 0
+        self.mes_ZQ1_voltage = 0
+        self.mes_ZQ2_voltage = 0
+
         self.state_VE1 = False
         self.state_VE2 = False
         self.state_VE3 = False
@@ -60,17 +69,10 @@ class BlockUPR:
         self.state_ZQ2 = False
         self.state_sound = False
 
-        """
-        voltage applied to the valve.
-        :voltage_ZQ1:
-            valve ZQ1.
-
-        :voltage_ZQ2:
-            valve ZQ2.
-        """
         self.set_voltage_ZQ1 = 0
         self.set_voltage_ZQ2 = 0
 
+        self.bus = bus
         self.msg_send_upr = can.Message(
             arbitration_id=self.id_blockUPR_command,
             is_extended_id=True,
@@ -85,39 +87,36 @@ class BlockUPR:
         )
 
     def get_states(self):
-        """
-        call to get the actual states of the units.
+        """call to get the actual states of the units.
         """
 
         self.msg_send_upr.data[0] = b"\x0f"[0]
         try:
-            bus.send(self.msg_send_upr)
-            print("Message sent on {}".format(bus.channel_info))
+            self.bus.send(self.msg_send_upr)
+            print("Message sent on {}".format(self.bus.channel_info))
         except can.CanError:
             print("Message NOT sent")
         finally:
             self.msg_send_upr.data[0] = b"\x00"[0]
 
     def get_measurements(self):
-        """
-        called to get values from sensors.
+        """called to get values from sensors.
         """
 
         self.msg_send_upr.data[0] = b"\xff"[0]
         try:
-            bus.send(self.msg_send_upr)
-            print("Message sent on {}".format(bus.channel_info))
+            self.bus.send(self.msg_send_upr)
+            print("Message sent on {}".format(self.bus.channel_info))
         except can.CanError:
             print("Message NOT sent")
         finally:
             self.msg_send_upr.data[0] = b"\x00"[0]
 
-    def valve(self, VE, state):
-        """
-        Opens and close valve.
+    def set_valve(self, VE: str, state: bool):
+        """Opens and close valve.
         """
 
-        if VE == "VE1":
+        if VE == 'VE1':
             if state:
                 self.state_VE1 = True
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x10]
@@ -125,7 +124,7 @@ class BlockUPR:
                 self.state_VE1 = False
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x1F]
 
-        if VE == "VE2":
+        if VE == 'VE2':
             if state:
                 self.state_VE2 = True
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x20]
@@ -133,7 +132,7 @@ class BlockUPR:
                 self.state_VE2 = False
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x2F]
 
-        if VE == "VE3":
+        if VE == 'VE3':
             if state:
                 self.state_VE3 = True
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x30]
@@ -142,84 +141,81 @@ class BlockUPR:
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x3F]
 
         try:
-            bus.send(self.msg_send_upr)
-            print("Message sent on {}".format(bus.channel_info))
+            self.bus.send(self.msg_send_upr)
+            print("Message sent on {}".format(self.bus.channel_info))
         except can.CanError:
             print("Message NOT sent")
         finally:
-            self.msg_send_upr.data[:3] = [0x00, 0x00, 0x00]
+            self.msg_send_upr.data[:3] = bytearray(3)
 
-    def sound(self, state):
-        """
-        toggle sound state.
+    def set_sound(self, state: bool):
+        """toggle sound state.
         """
 
-        if state == "ON":
+        if state:
             self.state_sound = True
             self.msg_send_upr.data[0] = b"\xa0"[0]
 
-        if state == "OFF":
+        if state:
             self.state_sound = False
             self.msg_send_upr.data[0] = b"\xaf"[0]
 
         try:
-            bus.send(self.msg_send_upr)
-            print("Message sent on {}".format(bus.channel_info))
+            self.bus.send(self.msg_send_upr)
+            print("Message sent on {}".format(self.bus.channel_info))
         except can.CanError:
             print("Message NOT sent")
         finally:
             self.msg_send_upr.data[0] = b"\x00"[0]
 
-    def sensor_PG(self, state):
-        """
-        toggle PG sensor state.
+    def set_sensor_PG(self, state: bool):
+        """toggle PG sensor state.
         """
 
-        if state == "ON":
+        if state:
             self.state_PG = True
             self.msg_send_upr.data[0] = b"\x22"[0]
 
-        if state == "OFF":
+        if state:
             self.state_PG = False
             self.msg_send_upr.data[0] = b"\x23"[0]
 
         try:
-            bus.send(self.msg_send_upr)
-            print("Message sent on {}".format(bus.channel_info))
+            self.bus.send(self.msg_send_upr)
+            print("Message sent on {}".format(self.bus.channel_info))
         except can.CanError:
             print("Message NOT sent")
         finally:
             self.msg_send_upr.data[0] = b"\x00"[0]
 
-    def gas_inlet(self, number, state, value):
-        """
-        gas flow control.
+    def set_gas_inlet(self, name: str, state: bool, value=0):
+        """gas flow control.
         """
 
-        if number == 1:
+        if name == 'ZQ1':
             if state:
                 self.state_ZQ1 = True
                 self.msg_send_upr[0] = b"\x40"
-                self.set_voltage_ZQ1 = valve
+                self.set_voltage_ZQ1 = value
                 self.msg_send_upr[2] = value
             else:
                 self.state_ZQ1 = False
                 self.msg_send_upr[0] = b"\x4f"
 
-        if number == 2:
+        if name == 'ZQ2':
             if state:
                 self.state_ZQ2 = True
                 self.msg_send_upr[0] = b"\x50"
-                self.set_voltage_ZQ2 = valve
+                self.set_voltage_ZQ2 = value
                 self.msg_send_upr[2] = value
             else:
                 self.state_ZQ2 = False
                 self.msg_send_upr[0] = b"\x5f"
 
         try:
-            bus.send(self.msg_send_upr)
-            print("Message sent on {}".format(bus.channel_info))
+            self.bus.send(self.msg_send_upr)
+            print("Message sent on {}".format(self.bus.channel_info))
         except can.CanError:
             print("Message NOT sent")
         finally:
-            self.msg_send_upr.data[:3] = [0x00, 0x00, 0x00]
+            self.msg_send_upr.data[:3] = bytearray(3)

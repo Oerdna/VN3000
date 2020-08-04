@@ -2,6 +2,7 @@ import can
 import json
 import sys
 from blockUpr import BlockUPR
+from blockRasp import BlockRasp
 
 
 class VN3000:
@@ -26,7 +27,16 @@ class VN3000:
             input()
 
         self.blk_upr = BlockUPR(self.bus)
+        self.blk_rasp = BlockRasp(self.bus)
 
     def star_work(self):
         """Getting started, the foundation of the program"""
         print("ВН-3000")
+
+        self.blk_upr.get_states()
+        self.blk_rasp.get_states()
+
+        self.blk_upr.set_valve(VE='VE3', state=True)
+        self.blk_rasp.set_pump(pump='NL', state=True)
+
+        
