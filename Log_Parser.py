@@ -13,4 +13,3 @@ for line in lines:
 
 with open("log_parsed", "w") as fw_obj:
     fw_obj.writelines(parsed)
-
