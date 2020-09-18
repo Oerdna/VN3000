@@ -1,8 +1,8 @@
-filename = "log_file.txt"
+filename = "NtPump.txt"
 print("Enter the ID of interest: (hex format)")
 ID_enter = input()
 parsed = []
-whitelist = [ID_eneter]
+whitelist = [ID_enter]
 with open(filename) as f_obj:
     lines = f_obj.readlines()
 

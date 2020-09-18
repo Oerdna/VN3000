@@ -46,6 +46,18 @@ class BlockUPR:
 
         :state_sound:
             sound signal.
+        
+        :water_1:
+            sensor water activ.
+
+        :water_2:
+            sensor water activ.
+
+        :water_3:
+            sensor water activ.
+
+        :turbine_active:
+            turbine is ready.
 
         Seted voltage applied to the valve.
 
@@ -61,6 +73,9 @@ class BlockUPR:
         self.mes_pmt6_1 = 0
         self.mes_pmt6_2 = 0
 
+        """
+        States of nodes
+        """
         self.state_VE1 = False
         self.state_VE2 = False
         self.state_VE3 = False
@@ -68,12 +83,14 @@ class BlockUPR:
         self.state_ZQ1 = False
         self.state_ZQ2 = False
         self.state_sound = False
-
         self.water_1 = False
         self.water_2 = False
         self.water_3 = False
-        self.turbine = False
+        self.turbine_active = False
 
+        """
+        Gas inlent value
+        """
         self.set_voltage_ZQ1 = 0
         self.set_voltage_ZQ2 = 0
 
@@ -107,26 +124,20 @@ class BlockUPR:
 
         if VE == "VE1":
             if state:
-                self.state_VE1 = True
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x10]
             else:
-                self.state_VE1 = False
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x1F]
 
         if VE == "VE2":
             if state:
-                self.state_VE2 = True
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x20]
             else:
-                self.state_VE2 = False
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x2F]
 
         if VE == "VE3":
             if state:
-                self.state_VE3 = True
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x30]
             else:
-                self.state_VE3 = False
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x3F]
 
         self.send_and_flush(self.msg_send_upr)
@@ -136,11 +147,8 @@ class BlockUPR:
         """
 
         if state:
-            self.state_sound = True
             self.msg_send_upr.data[0] = b"\xa0"[0]
-
-        if state:
-            self.state_sound = False
+        else:
             self.msg_send_upr.data[0] = b"\xaf"[0]
 
         self.send_and_flush(self.msg_send_upr)
@@ -150,38 +158,29 @@ class BlockUPR:
         """
 
         if state:
-            self.state_PG = True
             self.msg_send_upr.data[0] = b"\x22"[0]
-
-        if state:
-            self.state_PG = False
+        else:
             self.msg_send_upr.data[0] = b"\x23"[0]
 
         self.send_and_flush(self.msg_send_upr)
 
-    def set_gas_inlet(self, name: str, state: bool, value=0):
+    def set_gas_inlet(self, name: str, state: bool, value: int = 0):
         """gas flow control.
         """
 
         if name == "ZQ1":
             if state:
-                self.state_ZQ1 = True
-                self.msg_send_upr[0] = b"\x40"[0]
-                self.set_voltage_ZQ1 = value
-                self.msg_send_upr[2] = value
+                self.msg_send_upr.data[0] = b"\x40"[0]
+                self.msg_send_upr.data[2] = value
             else:
-                self.state_ZQ1 = False
-                self.msg_send_upr[0] = b"\x4f"[0]
+                self.msg_send_upr.data[0] = b"\x4f"[0]
 
         if name == "ZQ2":
             if state:
-                self.state_ZQ2 = True
-                self.msg_send_upr[0] = b"\x50"[0]
-                self.set_voltage_ZQ2 = value
-                self.msg_send_upr[2] = value
+                self.msg_send_upr.data[0] = b"\x50"[0]
+                self.msg_send_upr.data[2] = value
             else:
-                self.state_ZQ2 = False
-                self.msg_send_upr[0] = b"\x5f"[0]
+                self.msg_send_upr.data[0] = b"\x5f"[0]
 
         self.send_and_flush(self.msg_send_upr)
 
@@ -205,6 +204,8 @@ class BlockUPR:
                 "mes_pg_current": self.mes_pg_current,
                 "mes_ZQ1_voltage": self.mes_ZQ1_voltage,
                 "mes_ZQ2_voltage": self.mes_ZQ2_voltage,
+                "mes_pmt6_1": self.mes_pmt6_1,
+                "mes_pmt6_2": self.mes_pmt6_2,
             },
             {
                 "state_VE1": self.state_VE1,
@@ -216,5 +217,38 @@ class BlockUPR:
                 "state_sound": self.state_sound,
                 "set_voltage_ZQ1": self.set_voltage_ZQ1,
                 "set_voltage_ZQ2": self.set_voltage_ZQ2,
+                "water_1": self.water_1,
+                "water_2": self.water_2,
+                "water_3": self.water_3,
+                "turbine_active": self.turbine_active,
             },
         )
+
+    def return_mes(self):
+        return {
+            "pressure_ch": self.pressure_ch,
+            "pressure_pmp": self.pressure_pmp,
+            "pressure_pg": self.pressure_pg,
+            "mes_pg_current": self.mes_pg_current,
+            "mes_ZQ1_voltage": self.mes_ZQ1_voltage,
+            "mes_ZQ2_voltage": self.mes_ZQ2_voltage,
+            "mes_pmt6_1": self.mes_pmt6_1,
+            "mes_pmt6_2": self.mes_pmt6_2,
+        }
+
+    def return_states(self):
+        return {
+            "state_VE1": self.state_VE1,
+            "state_VE2": self.state_VE2,
+            "state_VE3": self.state_VE3,
+            "state_PG": self.state_PG,
+            "state_ZQ1": self.state_ZQ1,
+            "state_ZQ2": self.state_ZQ2,
+            "state_sound": self.state_sound,
+            "set_voltage_ZQ1": self.set_voltage_ZQ1,
+            "set_voltage_ZQ2": self.set_voltage_ZQ2,
+            "water_1": self.water_1,
+            "water_2": self.water_2,
+            "water_3": self.water_3,
+            "turbine_active": self.turbine_active,
+        }

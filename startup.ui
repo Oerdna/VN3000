@@ -148,7 +148,7 @@
             <item row="0" column="1">
              <widget class="QSpinBox" name="spinBox_current_heat">
               <property name="maximum">
-               <number>550</number>
+               <number>5500</number>
               </property>
              </widget>
             </item>
@@ -774,7 +774,7 @@
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap resource="resources.qrc">:/icons/icons/icons8-sensor-100 (r).png</pixmap>
+           <pixmap resource="resources.qrc">:/icons/icons/icons8-sensor-100.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>

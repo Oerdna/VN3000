@@ -1,12 +1,17 @@
 {
     "presetting": {
-        "dcBlock" : true,
-        "rfBlock" : true,
-        "highVoltageBlock" : true
+        "dcBlock": true,
+        "rfBlock": true,
+        "highVoltageBlock": true
+    },
+    "PID_ZQ": {
+        "P": 1,
+        "I": 1,
+        "D": 1
     },
     "pressureSettings": {
-        "pressureTurbine" : 15,
-        "pressureIonVacuumi" : 0.1
+        "pressureTurbine": 15,
+        "pressureIonVacuumi": 0.1
     },
-    "timeTurbine" : 1800
+    "timeTurbine": 1800
 }

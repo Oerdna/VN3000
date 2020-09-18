@@ -12,17 +12,17 @@ class BlockRasp:
     def __init__(self, bus: object):
         """States of the working units of the block.
 
-        :state_NL:
+        :state_NF:
             foreline pump.
 
-        :state_ND:
+        :state_NT:
             turbomolecular pump.
         
         :state_VE4_open:
-            state of the valve VE4.
+            state of microswitch the valve VE4.
 
         :state_VE4_close:
-            state of the valve VE4.
+            state of microswitch the valve VE4.
 
         :state_throttling:
             enable of throttling the shutter.
@@ -32,6 +32,18 @@ class BlockRasp:
 
         :state_rotation:
             substrate rotation.
+        
+        :state_chmb_open:
+            chamber is open.
+
+        :back_door_close:
+            back door is close.
+
+        :phase_electric:
+            phase electric is have.
+
+        :turbine_break:
+            turbine is break
 
         Variables are responsible for storing the I, speed and temperature.
         
@@ -56,17 +68,19 @@ class BlockRasp:
             rotational speed.
         """
 
-        self.state_NL = False
-        self.state_ND = False
+        self.state_NF = False
+        self.state_NT = False
         self.state_VE4_open = False
         self.state_VE4_close = False
         self.sate_comand_open_VE4 = False
         self.sate_comand_close_VE4 = False
-        self.state_VE4_move = False
         self.state_throttling = False
         self.state_heat = False
         self.state_rotation = False
-        self.chmb_open = False
+        self.state_chmb_open = False
+        self.back_door_close = False
+        self.phase_electric = False
+        self.turbine_break = False
 
         self.mes_current = 0
         self.mes_speed = 0
@@ -104,20 +118,16 @@ class BlockRasp:
         """turns on / off pumps.
         """
 
-        if pump == "NL":
+        if pump == "NF":
             if state:
-                self.state_NL = True
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x01]
             else:
-                self.state_NL = False
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x02]
 
-        if pump == "ND":
+        if pump == "NT":
             if state:
-                self.state_ND = True
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x03]
             else:
-                self.state_ND = False
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x04]
 
         self.send_and_flush(self.msg_send_upr)
@@ -127,58 +137,47 @@ class BlockRasp:
         """
         if gap is None:
             if state:
-                self.state_VE4_open = True
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x05]
             else:
-                self.state_VE4_close = True
                 self.msg_send_upr.data[:3] = [0x11, 0x00, 0x06]
         else:
-            self.state_VE4_close, self.state_VE4_open = False, False
             self.msg_send_upr[:3] = [0x11, 0x00, 0x10]
 
         self.send_and_flush(self.msg_send_upr)
 
-    def set_throttling(self, state: bool, value=0):
-        """Enable throttling mode. (This mode is not used (reserve)
+    def set_throttling(self, state: bool, value: int = 0):
+        """USELESS, NEED POTENTIOMETER ||
+        Enable throttling mode. (This mode is not used (reserve))    
         """
 
         if state:
-            self.state_throttling = True
-            self.seted_throttling = value
             self.msg_send_upr.data[0] = b"\x26"[0]
             self.msg_send_upr.data[2] = value
         else:
-            self.state_throttling = False
             self.msg_send_upr.data[:3] = b"\x27"[0]
 
         self.send_and_flush(self.msg_send_upr)
 
-    def set_heat(self, state: bool, value=0):
+    def set_heat(self, state: bool, value: int = 0):
         """Enable or disable heat of substrate
         """
 
         if state:
-            self.state_heat = True
-            self.seted_cur_heat = value
             self.msg_send_upr.data[0] = b"\x22"[0]
             self.msg_send_upr.data[2:4] = value.to_bytes(2, "little")
         else:
-            self.state_heat = False
             self.msg_send_upr.data[0] = b"\x23"[0]
 
         self.send_and_flush(self.msg_send_upr)
 
-    def set_rotation(self, state: bool, value=0):
+    def set_rotation(self, state: bool, value: int = 0):
         """Enable or disable rotatoin of substrate
         """
 
         if state:
-            self.state_rotation = True
-            self.seted_rot_speed = value
             self.msg_send_upr.data[0] = b"\x24"[0]
             self.msg_send_upr.data[2] = value
         else:
-            self.state_rotation = False
             self.msg_send_upr.data[0] = b"\x25"[0]
 
         self.send_and_flush(self.msg_send_upr)
@@ -202,19 +201,48 @@ class BlockRasp:
                 "mes_temperature": self.mes_temperature,
             },
             {
-                "state_NL": self.state_NL,
-                "state_ND": self.state_ND,
+                "state_NF": self.state_NF,
+                "state_NT": self.state_NT,
                 "state_VE4_open": self.state_VE4_open,
                 "state_VE4_close": self.state_VE4_close,
                 "sate_comand_open_VE4": self.sate_comand_open_VE4,
                 "sate_comand_close_VE4": self.sate_comand_close_VE4,
-                "state_VE4_move": self.state_VE4_move,
                 "state_throttling": self.state_throttling,
                 "state_heat": self.state_heat,
                 "state_rotation": self.state_rotation,
-                "chmb_open": self.chmb_open,
+                "state_chmb_open": self.state_chmb_open,
                 "seted_throttling": self.seted_throttling,
                 "seted_cur_heat": self.seted_cur_heat,
                 "seted_rot_speed": self.seted_rot_speed,
+                "back_door_close": self.back_door_close,
+                "phase_electric": self.phase_electric,
+                "turbine_break": self.turbine_break,
             },
         )
+
+    def return_mes(self):
+        return {
+            "mes_current": self.mes_current,
+            "mes_speed": self.mes_speed,
+            "mes_temperature": self.mes_temperature,
+        }
+
+    def return_states(self):
+        return {
+            "state_NF": self.state_NF,
+            "state_NT": self.state_NT,
+            "state_VE4_open": self.state_VE4_open,
+            "state_VE4_close": self.state_VE4_close,
+            "sate_comand_open_VE4": self.sate_comand_open_VE4,
+            "sate_comand_close_VE4": self.sate_comand_close_VE4,
+            "state_throttling": self.state_throttling,
+            "state_heat": self.state_heat,
+            "state_rotation": self.state_rotation,
+            "state_chmb_open": self.state_chmb_open,
+            "seted_throttling": self.seted_throttling,
+            "seted_cur_heat": self.seted_cur_heat,
+            "seted_rot_speed": self.seted_rot_speed,
+            "back_door_close": self.back_door_close,
+            "phase_electric": self.phase_electric,
+            "turbine_break": self.turbine_break,
+        }
