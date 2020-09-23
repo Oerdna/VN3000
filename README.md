@@ -37,3 +37,5 @@ The installation has a pressure indication system in the working volume in the r
 - Python CAN 3.3.3
 - PyQt 5.13
 - USB-CANmodul2 SYS TEC electronic 
+
+Подробнее на вики [странице](https://github.com/Oerdna/VN3000/wiki)
