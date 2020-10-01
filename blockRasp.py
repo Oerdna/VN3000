@@ -114,6 +114,16 @@ class BlockRasp:
 
         self.send_and_flush(self.msg_send_upr)
 
+    def get_periodic_measurements(self):
+        """called to get values from sensors.
+        """
+
+        self.msg_send_upr.data[0] = b"\xff"[0]
+        task = self.bus.send_periodic(self.msg_send_upr, period=0.5)
+        assert isinstance(task, can.CyclicSendTaskABC)
+        self.msg_send_upr.data[:8] = bytearray(8)
+        return task
+
     def set_pump(self, pump: str, state: bool):
         """turns on / off pumps.
         """
@@ -187,48 +197,17 @@ class BlockRasp:
         """
         try:
             self.bus.send(msg)
-            print("Message sent on {}".format(self.bus.channel_info))
+            # print("Message sent on {}".format(self.bus.channel_info))
         except can.CanError:
             print("Message NOT sent")
         finally:
             msg.data[:8] = bytearray(8)
 
     def return_states_mes(self):
-        return (
-            {
-                "mes_current": self.mes_current,
-                "mes_speed": self.mes_speed,
-                "mes_temperature": self.mes_temperature,
-            },
-            {
-                "state_NF": self.state_NF,
-                "state_NT": self.state_NT,
-                "state_VE4_open": self.state_VE4_open,
-                "state_VE4_close": self.state_VE4_close,
-                "sate_comand_open_VE4": self.sate_comand_open_VE4,
-                "sate_comand_close_VE4": self.sate_comand_close_VE4,
-                "state_throttling": self.state_throttling,
-                "state_heat": self.state_heat,
-                "state_rotation": self.state_rotation,
-                "state_chmb_open": self.state_chmb_open,
-                "seted_throttling": self.seted_throttling,
-                "seted_cur_heat": self.seted_cur_heat,
-                "seted_rot_speed": self.seted_rot_speed,
-                "back_door_close": self.back_door_close,
-                "phase_electric": self.phase_electric,
-                "turbine_break": self.turbine_break,
-            },
-        )
-
-    def return_mes(self):
         return {
             "mes_current": self.mes_current,
             "mes_speed": self.mes_speed,
             "mes_temperature": self.mes_temperature,
-        }
-
-    def return_states(self):
-        return {
             "state_NF": self.state_NF,
             "state_NT": self.state_NT,
             "state_VE4_open": self.state_VE4_open,
@@ -245,4 +224,33 @@ class BlockRasp:
             "back_door_close": self.back_door_close,
             "phase_electric": self.phase_electric,
             "turbine_break": self.turbine_break,
+        }
+
+    def return_mes(self):
+        return {
+            "mes_current": self.mes_current,
+            "mes_speed": self.mes_speed,
+            "mes_temperature": self.mes_temperature,
+            "state_NF": self.state_NF,
+            "state_NT": self.state_NT,
+            "state_VE4_open": self.state_VE4_open,
+            "state_VE4_close": self.state_VE4_close,
+            "sate_comand_open_VE4": self.sate_comand_open_VE4,
+            "sate_comand_close_VE4": self.sate_comand_close_VE4,
+            "state_chmb_open": self.state_chmb_open,
+        }
+
+    def return_states(self):
+        return {
+            "state_NF": self.state_NF,
+            "state_NT": self.state_NT,
+            "state_VE4_open": self.state_VE4_open,
+            "state_VE4_close": self.state_VE4_close,
+            "sate_comand_open_VE4": self.sate_comand_open_VE4,
+            "sate_comand_close_VE4": self.sate_comand_close_VE4,
+            "state_heat": self.state_heat,
+            "state_rotation": self.state_rotation,
+            "state_chmb_open": self.state_chmb_open,
+            "seted_cur_heat": self.seted_cur_heat,
+            "seted_rot_speed": self.seted_rot_speed,
         }

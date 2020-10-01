@@ -47,16 +47,13 @@ class VN3000:
         self.blk_rasp.get_measurements()
 
         self.reader_m4()
-
         time.sleep(1)
 
-        k, m = self.blk_upr.return_states_mes()
-        l, f = self.blk_rasp.return_states_mes()
+        k = self.blk_upr.return_states_mes()
+        l = self.blk_rasp.return_states_mes()
 
         print("Status mes block Upr:", k)
-        print("Status state block Upr:", m)
-        print("Status mes block Rasp:", l)
-        print("Status state block Rasp:", f)
+        print("Status state block Rasp:", l)
 
     def end_work(self):
         """Close CAN-USB bus and clear other stuff"""
@@ -330,9 +327,7 @@ class VN3000:
     def reader_m2(self):
         """Method 2 for read recv msg from bus
         """
-
         print("Read from Bus: M2")
-
         msg = self.bus.recv(0.02)
         if msg is not None:
             print(msg.data)
@@ -340,10 +335,21 @@ class VN3000:
     def reader_m4(self):
         """Method 4
         """
-
         print("Read from Bus: M4")
+        noti = can.Notifier(self.bus, [self.parser.read_input])
 
-        # reader = can.BufferedReader()
-        noti = can.Notifier(self.bus, [self.parser.read_input, can.Printer()])
-        # msg = reader.get_message()
-        # print(msg)
+    def get_values_for_update(self):
+        """
+        Return ALL Measurement
+        """
+        rasp = self.blk_rasp.return_mes()
+        upr = self.blk_upr.return_mes()
+        return {**rasp, **upr}
+
+    def get_values_for_states(self):
+        """
+        Return ALL States
+        """
+        rasp = self.blk_rasp.return_states()
+        upr = self.blk_upr.return_states()
+        return {**rasp, **upr}

@@ -89,11 +89,11 @@ class Parser:
             elif msg.data[2] & 240 == 48:
                 self.blockUpr.state_VE3 = False if msg.data[2] & 15 else True
             elif msg.data[2] & 240 == 80:
-                self.blockUpr.water_1 = False if msg.data[2] & 15 else True
+                self.blockUpr.water_1 = True if msg.data[2] & 15 else False
             elif msg.data[2] & 240 == 96:
-                self.blockUpr.water_2 = False if msg.data[2] & 15 else True
+                self.blockUpr.water_2 = True if msg.data[2] & 15 else False
             elif msg.data[2] & 240 == 112:
-                self.blockUpr.water_3 = False if msg.data[2] & 15 else True
+                self.blockUpr.water_3 = True if msg.data[2] & 15 else False
             elif msg.data[2] & 240 == 144:
                 if msg.data[2] & 15 == 15:
                     self.blockUpr.turbine_active = True

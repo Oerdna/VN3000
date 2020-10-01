@@ -64,9 +64,9 @@ class BlockUPR:
         :voltage_ZQ1 & voltage_ZQ2:
             valve ZQ1 & valve ZQ2.
         """
-        self.pressure_ch = 0
-        self.pressure_pmp = 0
-        self.pressure_pg = 0
+        self.pressure_ch = 0.02
+        self.pressure_pmp = 0.02
+        self.pressure_pg = 0.02
         self.mes_pg_current = 0
         self.mes_ZQ1_voltage = 0
         self.mes_ZQ2_voltage = 0
@@ -117,6 +117,16 @@ class BlockUPR:
         self.msg_send_upr.data[0] = b"\xff"[0]
 
         self.send_and_flush(self.msg_send_upr)
+
+    def get_periodic_measurements(self):
+        """called to get values from sensors.
+        """
+
+        self.msg_send_upr.data[0] = b"\xff"[0]
+        task = self.bus.send_periodic(self.msg_send_upr, period=0.5)
+        assert isinstance(task, can.CyclicSendTaskABC)
+        self.msg_send_upr.data[:8] = bytearray(8)
+        return task
 
     def set_valve(self, VE: str, state: bool):
         """Opens and close valve.
@@ -189,55 +199,22 @@ class BlockUPR:
         """
         try:
             self.bus.send(msg)
-            print("Message sent on {}".format(self.bus.channel_info))
+            # print("Message sent on {}".format(self.bus.channel_info))
         except can.CanError:
             print("Message NOT sent")
         finally:
             msg.data[:8] = bytearray(8)
 
     def return_states_mes(self):
-        return (
-            {
-                "pressure_ch": self.pressure_ch,
-                "pressure_pmp": self.pressure_pmp,
-                "pressure_pg": self.pressure_pg,
-                "mes_pg_current": self.mes_pg_current,
-                "mes_ZQ1_voltage": self.mes_ZQ1_voltage,
-                "mes_ZQ2_voltage": self.mes_ZQ2_voltage,
-                "mes_pmt6_1": self.mes_pmt6_1,
-                "mes_pmt6_2": self.mes_pmt6_2,
-            },
-            {
-                "state_VE1": self.state_VE1,
-                "state_VE2": self.state_VE2,
-                "state_VE3": self.state_VE3,
-                "state_PG": self.state_PG,
-                "state_ZQ1": self.state_ZQ1,
-                "state_ZQ2": self.state_ZQ2,
-                "state_sound": self.state_sound,
-                "set_voltage_ZQ1": self.set_voltage_ZQ1,
-                "set_voltage_ZQ2": self.set_voltage_ZQ2,
-                "water_1": self.water_1,
-                "water_2": self.water_2,
-                "water_3": self.water_3,
-                "turbine_active": self.turbine_active,
-            },
-        )
-
-    def return_mes(self):
         return {
-            "pressure_ch": self.pressure_ch,
-            "pressure_pmp": self.pressure_pmp,
-            "pressure_pg": self.pressure_pg,
-            "mes_pg_current": self.mes_pg_current,
+            "pressure_ch": self.pressure_ch / 133,
+            "pressure_pmp": self.pressure_pmp / 133,
+            "pressure_pg": self.pressure_pg / 133,
+            "mes_pg_current": self.mes_pg_current / 1250,
             "mes_ZQ1_voltage": self.mes_ZQ1_voltage,
             "mes_ZQ2_voltage": self.mes_ZQ2_voltage,
-            "mes_pmt6_1": self.mes_pmt6_1,
-            "mes_pmt6_2": self.mes_pmt6_2,
-        }
-
-    def return_states(self):
-        return {
+            "mes_pmt6_1": self.mes_pmt6_1 / 146.3,
+            "mes_pmt6_2": self.mes_pmt6_2 / 146.3,
             "state_VE1": self.state_VE1,
             "state_VE2": self.state_VE2,
             "state_VE3": self.state_VE3,
@@ -251,4 +228,37 @@ class BlockUPR:
             "water_2": self.water_2,
             "water_3": self.water_3,
             "turbine_active": self.turbine_active,
+        }
+
+    def return_mes(self):
+        return {
+            "pressure_ch": self.pressure_ch / 133,
+            "pressure_pmp": self.pressure_pmp / 133,
+            "pressure_pg": self.pressure_pg / 133,
+            "mes_pg_current": self.mes_pg_current / 1250,
+            "mes_ZQ1_voltage": self.mes_ZQ1_voltage,
+            "mes_ZQ2_voltage": self.mes_ZQ2_voltage,
+            "mes_pmt6_1": self.mes_pmt6_1 / 146.3,
+            "mes_pmt6_2": self.mes_pmt6_2 / 146.3,
+            "state_VE1": self.state_VE1,
+            "state_VE2": self.state_VE2,
+            "state_VE3": self.state_VE3,
+            "state_ZQ1": self.state_ZQ1,
+            "state_ZQ2": self.state_ZQ2,
+            "water_1": self.water_1,
+            "water_2": self.water_2,
+            "water_3": self.water_3,
+            "turbine_active": self.turbine_active,
+        }
+
+    def return_states(self):
+        return {
+            "state_VE1": self.state_VE1,
+            "state_VE2": self.state_VE2,
+            "state_VE3": self.state_VE3,
+            "state_PG": self.state_PG,
+            "state_ZQ1": self.state_ZQ1,
+            "state_ZQ2": self.state_ZQ2,
+            "set_voltage_ZQ1": self.set_voltage_ZQ1,
+            "set_voltage_ZQ2": self.set_voltage_ZQ2,
         }

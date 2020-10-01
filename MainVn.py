@@ -1,4 +1,5 @@
 import sys
+import math
 from PyQt5 import uic
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsScene, QMainWindow, QMessageBox
@@ -110,11 +111,6 @@ class MainWindow(QMainWindow):
         self.textAbout += "Подробнее на https://github.com/Oerdna/VN3000"
 
         """
-        Hide the PG pressure bar and label with data in init method
-        """
-        self.DisablePG()
-
-        """
         Method enable the work PG sensor
         """
         self.pushButton_PG.clicked.connect(self.ButtonPGHandler)
@@ -193,6 +189,19 @@ class MainWindow(QMainWindow):
         self.vn3000 = VN3000()
         self.vn3000.star_work()
         self.DialogMsg(self.vn3000.check_phase())
+        self.updateStatus()
+        """
+        Hide the PG pressure bar and label with data in init method
+        """
+        self.DisablePG()
+
+        """
+        Run the updater screen
+        """
+        self.timer = QtCore.QTimer(self)
+        self.timer.setInterval(500)
+        self.timer.timeout.connect(self.updateMeasurement)
+        self.timer.start()
 
     """
     Control of substrate
@@ -227,18 +236,14 @@ class MainWindow(QMainWindow):
     def checkBoxZQ1(self, state):
         if state == QtCore.Qt.Checked:
             self.vn3000.enable_inlent_ZQ1(self.vn3000.get_ZQ1())
-            self.scene.SvgObjs["ZQ1"]["ON"].setVisible(True)
         else:
             self.vn3000.close_ZQ1()
-            self.scene.SvgObjs["ZQ1"]["ON"].setVisible(False)
 
     def checkBoxZQ2(self, state):
         if state == QtCore.Qt.Checked:
             self.vn3000.enable_inlent_ZQ2(self.vn3000.get_ZQ2())
-            self.scene.SvgObjs["ZQ2"]["ON"].setVisible(True)
         else:
             self.vn3000.close_ZQ2()
-            self.scene.SvgObjs["ZQ2"]["ON"].setVisible(False)
 
     def changeZQ1(self):
         self.vn3000.change_ZQ1(self.spinBox_ZQ1.value())
@@ -270,13 +275,9 @@ class MainWindow(QMainWindow):
 
     def ButtonVE4open(self):
         self.DialogMsg(self.vn3000.open_VE4())
-        self.scene.SvgObjs["VE4"]["CLOSE"].setVisible(False)
-        self.scene.SvgObjs["VE4"]["ON"].setVisible(True)
 
     def ButtonVE4close(self):
         self.DialogMsg(self.vn3000.close_VE4())
-        self.scene.SvgObjs["VE4"]["CLOSE"].setVisible(True)
-        self.scene.SvgObjs["VE4"]["ON"].setVisible(False)
 
     """
     VE3 - Handler: aneble and disable. Checking conditions for reduce crash of installation
@@ -289,12 +290,10 @@ class MainWindow(QMainWindow):
             self.DisableVE3()
 
     def EnableVE3(self):
-        self.DialogMsg(self.vn3000.open_VE3())
-        self.scene.SvgObjs["VE3"]["ON"].setVisible(True)
+        self.DialogMsg(self.vn3000.open_VE3(), self.pushButton_VE3)
 
     def DisableVE3(self):
-        self.DialogMsg(self.vn3000.close_VE3())
-        self.scene.SvgObjs["VE3"]["ON"].setVisible(False)
+        self.DialogMsg(self.vn3000.close_VE3(), self.pushButton_VE3)
 
     """
     VE2 - Handler: aneble and disable. Checking conditions for reduce crash of installation
@@ -307,12 +306,10 @@ class MainWindow(QMainWindow):
             self.DisableVE2()
 
     def EnableVE2(self):
-        self.DialogMsg(self.vn3000.open_VE2())
-        self.scene.SvgObjs["VE2"]["ON"].setVisible(True)
+        self.DialogMsg(self.vn3000.open_VE2(), self.pushButton_VE2)
 
     def DisableVE2(self):
-        self.DialogMsg(self.vn3000.close_VE2())
-        self.scene.SvgObjs["VE2"]["ON"].setVisible(False)
+        self.DialogMsg(self.vn3000.close_VE2(), self.pushButton_VE2)
 
     """
     VE1 - Handler: aneble and disable. Checking conditions for reduce crash of installation
@@ -325,12 +322,10 @@ class MainWindow(QMainWindow):
             self.DisableVE1()
 
     def EnableVE1(self):
-        self.DialogMsg(self.vn3000.open_VE1())
-        self.scene.SvgObjs["VE1"]["ON"].setVisible(True)
+        self.DialogMsg(self.vn3000.open_VE1(), self.pushButton_VE1)
 
     def DisableVE1(self):
-        self.DialogMsg(self.vn3000.close_VE1())
-        self.scene.SvgObjs["VE1"]["ON"].setVisible(False)
+        self.DialogMsg(self.vn3000.close_VE1(), self.pushButton_VE1)
 
     """
     NT - Handler: aneble and disable. Checking conditions for reduce crash of installation
@@ -343,12 +338,10 @@ class MainWindow(QMainWindow):
             self.DisableNT()
 
     def EnableNT(self):
-        self.DialogMsg(self.vn3000.enable_NT())
-        self.scene.SvgObjs["NT"]["WAIT"].setVisible(True)
+        self.DialogMsg(self.vn3000.enable_NT(), self.pushButton_NT)
 
     def DisableNT(self):
-        self.DialogMsg(self.vn3000.disable_NT())
-        self.scene.SvgObjs["NT"]["WAIT"].setVisible(False)
+        self.DialogMsg(self.vn3000.disable_NT(), self.pushButton_NT)
 
     """
     NF - Handler: aneble and disable. Checking conditions for reduce crash of installation
@@ -361,12 +354,10 @@ class MainWindow(QMainWindow):
             self.DisableNF()
 
     def EnableNF(self):
-        self.DialogMsg(self.vn3000.enable_NF())
-        self.scene.SvgObjs["NF"]["ON"].setVisible(True)
+        self.DialogMsg(self.vn3000.enable_NF(), self.pushButton_NF)
 
     def DisableNF(self):
-        self.DialogMsg(self.vn3000.disable_NF())
-        self.scene.SvgObjs["NF"]["ON"].setVisible(False)
+        self.DialogMsg(self.vn3000.disable_NF(), self.pushButton_NF)
 
     """
     PG - Handler: anable and disable. Checking conditions for reduce crash of installation
@@ -379,22 +370,25 @@ class MainWindow(QMainWindow):
             self.DisablePG()
 
     def EnablePG(self):
-        self.DialogMsg(self.vn3000.enable_PG())
+        self.DialogMsg(self.vn3000.enable_PG(), self.pushButton_PG)
         self.progressBar_PG.setVisible(True)
         self.label_isPG.setVisible(True)
         self.label_pressure_PG.setVisible(True)
         self.label_PG.setVisible(True)
 
     def DisablePG(self):
+        self.vn3000.disable_PG()
         self.progressBar_PG.setVisible(False)
         self.label_isPG.setVisible(False)
         self.label_pressure_PG.setVisible(False)
         self.label_PG.setVisible(False)
 
-    def DialogMsg(self, ErrorCode: int):
+    def DialogMsg(self, ErrorCode: int, Button: object = None):
         print("Error Code: ", ErrorCode)
         if ErrorCode != None:
             msg = QMessageBox.warning(self, "Message Warning", self.CodeDict[ErrorCode])
+            if Button != None:
+                Button.toggle()
 
     def closeEvent(self, event):
         close = QMessageBox.question(
@@ -409,6 +403,174 @@ class MainWindow(QMainWindow):
             event.accept()
         else:
             event.ignore()
+
+    def updateMeasurement(self):
+        """
+        Update the labels every 0.5 seconds using a QTimer
+        """
+        self.vn3000.blk_rasp.get_measurements()
+        self.vn3000.blk_upr.get_measurements()
+        """
+        Get kwargs from VN3000
+        """
+        kwargsMeas = self.vn3000.get_values_for_update()
+        """
+        Set text labels by .formats
+        """
+        self.label_isP1.setText("{pressure_ch:.2E}, мм. рт. ст.".format(**kwargsMeas))
+        self.label_isP2.setText("{pressure_pmp:.2E}, мм. рт. ст.".format(**kwargsMeas))
+        self.label_isPG.setText("{pressure_pg:.2E}, мм. рт. ст.".format(**kwargsMeas))
+        self.label_isP1_U.setText("{mes_pmt6_1:.2f}, В".format(**kwargsMeas))
+        self.label_isP2_U.setText("{mes_pmt6_2:.2f}, В".format(**kwargsMeas))
+        self.label_isZQ1_U.setText("{mes_ZQ1_voltage}, ед.".format(**kwargsMeas))
+        self.label_isZQ2_U.setText("{mes_ZQ2_voltage}, ед.".format(**kwargsMeas))
+        self.label_isPG_I.setText("{mes_pg_current:.2f}, мА".format(**kwargsMeas))
+        self.label_istemperature.setText("{mes_temperature}, ℃".format(**kwargsMeas))
+        self.label_iscurrent_heat.setText("{mes_current}, А".format(**kwargsMeas))
+        self.label_isspeed.setText("{mes_speed}, об/мин".format(**kwargsMeas))
+        """
+        Check waters
+        """
+        if kwargsMeas["water_1"]:
+            self.WaterSensor1.setPixmap(
+                QtGui.QPixmap(":/icons/icons/icons8-sensor-100.png")
+            )
+        else:
+            self.WaterSensor1.setPixmap(
+                QtGui.QPixmap(":/icons/icons/icons8-sensor-100 (r).png")
+            )
+        if kwargsMeas["water_2"]:
+            self.WaterSensor2.setPixmap(
+                QtGui.QPixmap(":/icons/icons/icons8-sensor-100.png")
+            )
+        else:
+            self.WaterSensor2.setPixmap(
+                QtGui.QPixmap(":/icons/icons/icons8-sensor-100 (r).png")
+            )
+        if kwargsMeas["water_3"]:
+            self.WaterSensor3.setPixmap(
+                QtGui.QPixmap(":/icons/icons/icons8-sensor-100.png")
+            )
+        else:
+            self.WaterSensor3.setPixmap(
+                QtGui.QPixmap(":/icons/icons/icons8-sensor-100 (r).png")
+            )
+        """
+        Set bar widget in log scale
+        """
+        kwargsMeas["pressure_ch"] = (
+            2e-3 if kwargsMeas["pressure_ch"] < 2e-3 else kwargsMeas["pressure_ch"]
+        )
+        self.progressBar_P1.setValue(
+            round(math.log10(kwargsMeas["pressure_ch"] * 133) * 100)
+        )
+        kwargsMeas["pressure_pmp"] = (
+            2e-3 if kwargsMeas["pressure_pmp"] < 2e-3 else kwargsMeas["pressure_pmp"]
+        )
+        self.progressBar_P2.setValue(
+            round(math.log10(kwargsMeas["pressure_pmp"] * 133) * 100)
+        )
+        kwargsMeas["pressure_pg"] = (
+            7.5e-8 if kwargsMeas["pressure_pg"] < 7.5e-8 else kwargsMeas["pressure_pg"]
+        )
+        self.progressBar_PG.setValue(
+            round(math.log10(kwargsMeas["pressure_pg"] * 133) * 100)
+        )
+        """
+        Set SvgItems
+        """
+        self.scene.SvgObjs["VE1"]["ON"].setVisible(kwargsMeas["state_VE1"])
+        self.scene.SvgObjs["VE2"]["ON"].setVisible(kwargsMeas["state_VE2"])
+        self.scene.SvgObjs["VE3"]["ON"].setVisible(kwargsMeas["state_VE3"])
+        self.scene.SvgObjs["ZQ1"]["ON"].setVisible(kwargsMeas["state_ZQ1"])
+        self.scene.SvgObjs["ZQ2"]["ON"].setVisible(kwargsMeas["state_ZQ2"])
+        self.scene.SvgObjs["NF"]["ON"].setVisible(kwargsMeas["state_NF"])
+        self.scene.SvgObjs["CMB"]["ON"].setVisible(kwargsMeas["state_chmb_open"])
+        """NT Logic
+        """
+        if kwargsMeas["turbine_active"]:
+            self.scene.SvgObjs["NT"]["ON"].setVisible(True)
+            self.scene.SvgObjs["NT"]["WAIT"].setVisible(False)
+        else:
+            self.scene.SvgObjs["NT"]["WAIT"].setVisible(kwargsMeas["state_NT"])
+        """VE4 Logic
+        """
+        if kwargsMeas["state_VE4_close"]:
+            self.scene.SvgObjs["VE4"]["CLOSE"].setVisible(True)
+            self.scene.SvgObjs["Waring_VE4"]["ON"].setVisible(False)
+        elif kwargsMeas["state_VE4_open"]:
+            self.scene.SvgObjs["VE4"]["ON"].setVisible(True)
+            self.scene.SvgObjs["Waring_VE4"]["ON"].setVisible(False)
+        elif (
+            kwargsMeas["state_VE4_open"] == False
+            and kwargsMeas["state_VE4_close"] == False
+        ) and (
+            kwargsMeas("sate_comand_open_VE4") == False
+            and kwargsMeas("sate_comand_close_VE4") == False
+        ):
+            self.scene.SvgObjs["Waring_VE4"]["ON"].setVisible(True)
+        else:
+            self.scene.SvgObjs["VE4"]["ON"].setVisible(False)
+            self.scene.SvgObjs["VE4"]["CLOSE"].setVisible(False)
+            self.scene.SvgObjs["Waring_VE4"]["ON"].setVisible(False)
+
+    def updateStatus(self):
+        """
+        Update states
+        """
+        kwargsStats = self.vn3000.get_values_for_states()
+        """
+        Change labels and widgets
+        """
+        self.pushButton_VE1.setChecked(kwargsStats["state_VE1"])
+        self.pushButton_VE2.setChecked(kwargsStats["state_VE2"])
+        self.pushButton_VE3.setChecked(kwargsStats["state_VE3"])
+        self.pushButton_NF.setChecked(kwargsStats["state_NF"])
+        self.pushButton_NT.setChecked(kwargsStats["state_NT"])
+        self.checkBox_ZQ1.setChecked(kwargsStats["state_ZQ1"])
+        self.spinBox_ZQ1.setValue(kwargsStats["set_voltage_ZQ1"])
+        self.checkBox_ZQ2.setChecked(kwargsStats["state_ZQ2"])
+        self.spinBox_ZQ2.setValue(kwargsStats["set_voltage_ZQ2"])
+        self.checkBox_currnet_heat.setChecked(kwargsStats["state_heat"])
+        self.spinBox_current_heat.setValue(kwargsStats["seted_cur_heat"])
+        self.checkBox_rotation_substrate.setChecked(kwargsStats["state_rotation"])
+        self.spinBox_Speed.setValue(kwargsStats["seted_rot_speed"])
+        """PG Logic
+        """
+        if kwargsStats["state_PG"] == True:
+            self.pushButton_PG.setChecked(kwargsStats["state_PG"])
+            self.EnablePG()
+        """
+        Set SvgItems
+        """
+        self.scene.SvgObjs["VE2"]["ON"].setVisible(kwargsStats["state_VE2"])
+        self.scene.SvgObjs["VE1"]["ON"].setVisible(kwargsStats["state_VE1"])
+        self.scene.SvgObjs["VE3"]["ON"].setVisible(kwargsStats["state_VE3"])
+        self.scene.SvgObjs["ZQ1"]["ON"].setVisible(kwargsStats["state_ZQ1"])
+        self.scene.SvgObjs["ZQ2"]["ON"].setVisible(kwargsStats["state_ZQ2"])
+        self.scene.SvgObjs["NF"]["ON"].setVisible(kwargsStats["state_NF"])
+        self.scene.SvgObjs["NT"]["WAIT"].setVisible(kwargsStats["state_NT"])
+        self.scene.SvgObjs["CMB"]["ON"].setVisible(kwargsStats["state_chmb_open"])
+        """VE4 Logic
+        """
+        if kwargsStats["state_VE4_close"]:
+            self.scene.SvgObjs["VE4"]["CLOSE"].setVisible(True)
+            self.scene.SvgObjs["Waring_VE4"]["ON"].setVisible(False)
+        elif kwargsStats["state_VE4_open"]:
+            self.scene.SvgObjs["VE4"]["ON"].setVisible(True)
+            self.scene.SvgObjs["Waring_VE4"]["ON"].setVisible(False)
+        elif (
+            kwargsStats["state_VE4_open"] == False
+            and kwargsStats["state_VE4_close"] == False
+        ) and (
+            kwargsStats("sate_comand_open_VE4") == False
+            and kwargsStats("sate_comand_close_VE4") == False
+        ):
+            self.scene.SvgObjs["Waring_VE4"]["ON"].setVisible(True)
+        else:
+            self.scene.SvgObjs["VE4"]["ON"].setVisible(False)
+            self.scene.SvgObjs["VE4"]["CLOSE"].setVisible(False)
+            self.scene.SvgObjs["Waring_VE4"]["ON"].setVisible(False)
 
 
 if __name__ == "__main__":
