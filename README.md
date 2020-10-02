@@ -1,10 +1,9 @@
 ## Применение
-run mainVn.py
+запустить `mainVn.py`
 
 
 ## VN3000
 Basic App for the older installation make by Rus - Ukr factory. These installations are few in number and may have different firmware, as well as accessories.
-
 The installation is intended for research work on the sputtering of metals, semiconductors and dielectrics using DC or RF magnetrons.
 
 The installation provides the limiting residual pressure in the working volume not more than 2 × 10-3 Pa.
@@ -35,7 +34,7 @@ The installation has a pressure indication system in the working volume in the r
 Установка имеют систему индикации давления в рабочем объеме в диапазоне от 1,0×10+5 Па до 1,0×10-4 Па.
 
 ***
-Технлогический стек включает в себя:
+Технологический стек включает в себя:
  
 - Python 3.8
 - Python CAN 3.3.3
