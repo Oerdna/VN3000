@@ -1,4 +1,8 @@
-# VN3000
+## Применение
+run mainVn.py
+
+
+## VN3000
 Basic App for the older installation make by Rus - Ukr factory. These installations are few in number and may have different firmware, as well as accessories.
 
 The installation is intended for research work on the sputtering of metals, semiconductors and dielectrics using DC or RF magnetrons.
@@ -15,7 +19,7 @@ The maximum ion current of the Ion Etch / Cleaner device is 100 mA.
 The installation provides pumping out of the working volume from atmospheric pressure to a pressure of 6.0 × 10-3 Pa in a time not exceeding 45 minutes.
 The installation has a pressure indication system in the working volume in the range from 1.0 × 10+5 Pa to 1.0 × 10-4 Pa.
 
-# ВН3000
+## ВН3000
 Вакуумный напылительный пост ВН-3000. Установка предназначена для исследовательских работ по распылению металлов, полупроводников и диэлектриков с помощью магнетронов DC или RF.
 
 Установка обеспечивает предельное остаточное давление в рабочем объеме не более 2×10-3 Па.
@@ -39,3 +43,9 @@ The installation has a pressure indication system in the working volume in the r
 - USB-CANmodul2 SYS TEC electronic 
 
 Подробнее на вики [странице](https://github.com/Oerdna/VN3000/wiki)
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
+
+## Acknowledgment
+Appreciation to those who have contributed to the project.
