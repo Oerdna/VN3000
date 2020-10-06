@@ -1,6 +1,8 @@
-## Применение
-запустить `mainVn.py`
+# Приложение по управлению установкой VN3000
+![GUI](https://github.com/Oerdna/VN3000/blob/master/doc/GUI.png?raw=true)
 
+## Применение
+Запустить `mainVn.py`
 
 ## VN3000
 Basic App for the older installation make by Rus - Ukr factory. These installations are few in number and may have different firmware, as well as accessories.
