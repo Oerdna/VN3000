@@ -72,8 +72,8 @@ class BlockRasp:
         self.state_NT = False
         self.state_VE4_open = False
         self.state_VE4_close = False
-        self.sate_comand_open_VE4 = False
-        self.sate_comand_close_VE4 = False
+        self.state_comand_open_VE4 = False
+        self.state_comand_close_VE4 = False
         self.state_throttling = False
         self.state_heat = False
         self.state_rotation = False
@@ -101,96 +101,87 @@ class BlockRasp:
     def get_states(self):
         """call to get the actual states of the units.
         """
-
-        self.msg_send_upr.data[0] = b"\x0f"[0]
-
-        self.send_and_flush(self.msg_send_upr)
+        msg = self.msg_send_upr
+        msg.data[0] = b"\x0f"[0]
+        self.send_and_flush(msg)
 
     def get_measurements(self):
         """called to get values from sensors.
         """
-
-        self.msg_send_upr.data[0] = b"\xff"[0]
-
-        self.send_and_flush(self.msg_send_upr)
-
-    def get_periodic_measurements(self):
-        """called to get values from sensors.
-        """
-
-        self.msg_send_upr.data[0] = b"\xff"[0]
-        task = self.bus.send_periodic(self.msg_send_upr, period=0.5)
-        assert isinstance(task, can.CyclicSendTaskABC)
-        self.msg_send_upr.data[:8] = bytearray(8)
-        return task
+        msg = self.msg_send_upr
+        msg.data[0] = b"\xff"[0]
+        self.send_and_flush(msg)
 
     def set_pump(self, pump: str, state: bool):
         """turns on / off pumps.
         """
-
         if pump == "NF":
             if state:
-                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x01]
+                msg = self.msg_send_upr
+                msg.data[:3] = [0x11, 0x00, 0x01]
             else:
-                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x02]
-
-        if pump == "NT":
+                msg = self.msg_send_upr
+                msg.data[:3] = [0x11, 0x00, 0x02]
+        elif pump == "NT":
             if state:
-                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x03]
+                msg = self.msg_send_upr
+                msg.data[:3] = [0x11, 0x00, 0x03]
             else:
-                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x04]
-
-        self.send_and_flush(self.msg_send_upr)
+                msg = self.msg_send_upr
+                msg.data[:3] = [0x11, 0x00, 0x04]
+        self.send_and_flush(msg)
 
     def set_valve_VE4(self, state: bool, gap=None):
         """Open and close valve VE4.
         """
         if gap is None:
             if state:
-                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x05]
+                msg = self.msg_send_upr
+                msg.data[:3] = [0x11, 0x00, 0x05]
             else:
-                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x06]
+                msg = self.msg_send_upr
+                msg.data[:3] = [0x11, 0x00, 0x06]
         else:
-            self.msg_send_upr[:3] = [0x11, 0x00, 0x10]
-
-        self.send_and_flush(self.msg_send_upr)
+            msg = self.msg_send_upr
+            msg.data[:3] = [0x11, 0x00, 0x10]
+        self.send_and_flush(msg)
 
     def set_throttling(self, state: bool, value: int = 0):
         """USELESS, NEED POTENTIOMETER ||
         Enable throttling mode. (This mode is not used (reserve))    
         """
-
         if state:
-            self.msg_send_upr.data[0] = b"\x26"[0]
-            self.msg_send_upr.data[2] = value
+            msg = self.msg_send_upr
+            msg.data[0] = b"\x26"[0]
+            msg.data[2] = value
         else:
-            self.msg_send_upr.data[:3] = b"\x27"[0]
-
-        self.send_and_flush(self.msg_send_upr)
+            msg = self.msg_send_upr
+            msg.data[:3] = b"\x27"[0]
+        self.send_and_flush(msg)
 
     def set_heat(self, state: bool, value: int = 0):
         """Enable or disable heat of substrate
         """
-
         if state:
-            self.msg_send_upr.data[0] = b"\x22"[0]
-            self.msg_send_upr.data[2:4] = value.to_bytes(2, "little")
+            msg = self.msg_send_upr
+            msg.data[0] = b"\x22"[0]
+            msg.data[2:4] = value.to_bytes(2, "little")
         else:
-            self.msg_send_upr.data[0] = b"\x23"[0]
-
-        self.send_and_flush(self.msg_send_upr)
+            msg = self.msg_send_upr
+            msg.data[0] = b"\x23"[0]
+        self.send_and_flush(msg)
 
     def set_rotation(self, state: bool, value: int = 0):
         """Enable or disable rotatoin of substrate
         """
-
         if state:
-            self.msg_send_upr.data[0] = b"\x24"[0]
-            self.msg_send_upr.data[2] = value
+            msg = self.msg_send_upr
+            msg.data[0] = b"\x24"[0]
+            msg.data[2] = value
         else:
-            self.msg_send_upr.data[0] = b"\x25"[0]
-
-        self.send_and_flush(self.msg_send_upr)
+            msg = self.msg_send_upr
+            msg.data[0] = b"\x25"[0]
+        self.send_and_flush(msg)
 
     def send_and_flush(self, msg):
         """Send fun with callbcak Eror
@@ -200,8 +191,6 @@ class BlockRasp:
             # print("Message sent on {}".format(self.bus.channel_info))
         except can.CanError:
             print("Message NOT sent")
-        finally:
-            msg.data[:8] = bytearray(8)
 
     def return_states_mes(self):
         return {
@@ -212,8 +201,8 @@ class BlockRasp:
             "state_NT": self.state_NT,
             "state_VE4_open": self.state_VE4_open,
             "state_VE4_close": self.state_VE4_close,
-            "sate_comand_open_VE4": self.sate_comand_open_VE4,
-            "sate_comand_close_VE4": self.sate_comand_close_VE4,
+            "state_comand_open_VE4": self.state_comand_open_VE4,
+            "state_comand_close_VE4": self.state_comand_close_VE4,
             "state_throttling": self.state_throttling,
             "state_heat": self.state_heat,
             "state_rotation": self.state_rotation,
@@ -235,8 +224,8 @@ class BlockRasp:
             "state_NT": self.state_NT,
             "state_VE4_open": self.state_VE4_open,
             "state_VE4_close": self.state_VE4_close,
-            "sate_comand_open_VE4": self.sate_comand_open_VE4,
-            "sate_comand_close_VE4": self.sate_comand_close_VE4,
+            "state_comand_open_VE4": self.state_comand_open_VE4,
+            "state_comand_close_VE4": self.state_comand_close_VE4,
             "state_chmb_open": self.state_chmb_open,
         }
 
@@ -246,8 +235,8 @@ class BlockRasp:
             "state_NT": self.state_NT,
             "state_VE4_open": self.state_VE4_open,
             "state_VE4_close": self.state_VE4_close,
-            "sate_comand_open_VE4": self.sate_comand_open_VE4,
-            "sate_comand_close_VE4": self.sate_comand_close_VE4,
+            "state_comand_open_VE4": self.state_comand_open_VE4,
+            "state_comand_close_VE4": self.state_comand_close_VE4,
             "state_heat": self.state_heat,
             "state_rotation": self.state_rotation,
             "state_chmb_open": self.state_chmb_open,

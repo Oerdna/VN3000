@@ -63,7 +63,7 @@ class Scene(QGraphicsScene):
         }
         self.SvgItems["Waring_VE4"] = {
             "pos": {"x": 153.153, "y": 185.572},
-            "state": {"ON": "g1099"},
+            "state": {"ON": "g282"},
         }
 
         """
@@ -101,7 +101,7 @@ class MainWindow(QMainWindow):
         self.CodeDict[-10] = "Давление больше разрешённого для включения датчика PG"
         self.CodeDict[-11] = "Проблемы с фазой!"
         self.CodeDict[-12] = "Давление в камере больше разрешенного!"
-        self.CodeDict[-13] = "Остановка насоса длиться в течении 50 мин!"
+        self.CodeDict[-13] = "Остановка насоса длится в течении 50 мин!"
 
         """
         Text aboout
@@ -462,19 +462,19 @@ class MainWindow(QMainWindow):
             2e-3 if kwargsMeas["pressure_ch"] < 2e-3 else kwargsMeas["pressure_ch"]
         )
         self.progressBar_P1.setValue(
-            round(math.log10(kwargsMeas["pressure_ch"] * 133) * 100)
+            round(math.log10(kwargsMeas["pressure_ch"] * 133)) * 100
         )
         kwargsMeas["pressure_pmp"] = (
             2e-3 if kwargsMeas["pressure_pmp"] < 2e-3 else kwargsMeas["pressure_pmp"]
         )
         self.progressBar_P2.setValue(
-            round(math.log10(kwargsMeas["pressure_pmp"] * 133) * 100)
+            round(math.log10(kwargsMeas["pressure_pmp"] * 133)) * 100
         )
         kwargsMeas["pressure_pg"] = (
             7.5e-8 if kwargsMeas["pressure_pg"] < 7.5e-8 else kwargsMeas["pressure_pg"]
         )
         self.progressBar_PG.setValue(
-            round(math.log10(kwargsMeas["pressure_pg"] * 133) * 100)
+            round(math.log10(kwargsMeas["pressure_pg"] * 133)) * 100
         )
         """
         Set SvgItems
@@ -505,8 +505,8 @@ class MainWindow(QMainWindow):
             kwargsMeas["state_VE4_open"] == False
             and kwargsMeas["state_VE4_close"] == False
         ) and (
-            kwargsMeas("sate_comand_open_VE4") == False
-            and kwargsMeas("sate_comand_close_VE4") == False
+            kwargsMeas["state_comand_open_VE4"] == False
+            and kwargsMeas["state_comand_close_VE4"] == False
         ):
             self.scene.SvgObjs["Waring_VE4"]["ON"].setVisible(True)
         else:
@@ -563,8 +563,8 @@ class MainWindow(QMainWindow):
             kwargsStats["state_VE4_open"] == False
             and kwargsStats["state_VE4_close"] == False
         ) and (
-            kwargsStats("sate_comand_open_VE4") == False
-            and kwargsStats("sate_comand_close_VE4") == False
+            kwargsStats["state_comand_open_VE4"] == False
+            and kwargsStats["state_comand_close_VE4"] == False
         ):
             self.scene.SvgObjs["Waring_VE4"]["ON"].setVisible(True)
         else:

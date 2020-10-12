@@ -1,6 +1,9 @@
 import can
+import asyncio
+import threading
 import json
 import time
+from pprint import pprint
 from blockUpr import BlockUPR
 from blockRasp import BlockRasp
 from Parser import Parser
@@ -28,7 +31,7 @@ class VN3000:
         )
 
         try:
-            self.bus = can.interface.Bus(bustype="systec", channel="0", bitrate=1000000)
+            self.bus = can.ThreadSafeBus(bustype="systec", channel="0", bitrate=1000000)
         except can.CanError:
             print("Hardware or CAN interface initialization failed.")
             input()
@@ -51,12 +54,14 @@ class VN3000:
 
         k = self.blk_upr.return_states_mes()
         l = self.blk_rasp.return_states_mes()
-
-        print("Status mes block Upr:", k)
-        print("Status state block Rasp:", l)
+        print("Status block Upr:")
+        pprint(k)
+        print("Status block Rasp:")
+        pprint(l)
 
     def end_work(self):
         """Close CAN-USB bus and clear other stuff"""
+        self.noti.stop()
         self.bus.shutdown()
 
     def check_phase(self):
@@ -99,18 +104,18 @@ class VN3000:
 
     def enable_NT(self):
         """Enable pump NT:
-            | Cheking: NT, Preasure P1, Water 1.
+            | Cheking: NT, Preasure P2, Water 1.
         """
         if (
             self.blk_rasp.state_NT == False
-            and self.blk_upr.pressure_ch < self.pressureTurbine_start
+            and self.blk_upr.pressure_pmp < self.pressureTurbine_start
             and self.blk_upr.water_1 == True
         ):
             self.blk_rasp.set_pump("NT", True)
         elif self.blk_upr.water_1 == False:
             self.blk_upr.set_sound(True)
             return -5
-        elif self.blk_upr.pressure_ch > self.pressureTurbine_start:
+        elif self.blk_upr.pressure_pmp > self.pressureTurbine_start:
             return -6
 
     def disable_NT(self):
@@ -139,7 +144,7 @@ class VN3000:
             and self.blk_upr.pressure_ch < self.pressureTurbine_start
         ):
             self.blk_rasp.set_valve_VE4(True)
-        elif self.blk_upr.state_VE1 == False:
+        elif self.blk_upr.state_VE1 == True:
             return -8
         elif self.blk_rasp.state_chmb_open == True:
             return -9
@@ -226,8 +231,7 @@ class VN3000:
         """Disable sound 
             | Cheking: sound
         """
-        if self.blk_upr.state_sound == True:
-            self.blk_upr.set_sound(False)
+        self.blk_upr.set_sound(False)
 
     def enable_PG(self):
         """Enable sensor PG:
@@ -336,7 +340,8 @@ class VN3000:
         """Method 4
         """
         print("Read from Bus: M4")
-        noti = can.Notifier(self.bus, [self.parser.read_input])
+        loop = asyncio.get_event_loop()
+        self.noti = can.Notifier(self.bus, [self.parser.read_input], loop=loop)
 
     def get_values_for_update(self):
         """

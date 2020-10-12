@@ -1,11 +1,10 @@
 <RCC>
   <qresource prefix="icons">
-    <file>icons/172686-200.png</file>
-    <file>icons/172696-200.png</file>
+    <file>icons/down-chevron.png</file>
+    <file>icons/up-chevron.png</file>
     <file>icons/turbine.png</file>
     <file>icons/icons8-automatic-100.png</file>
     <file>icons/icons8-no-audio-100.png</file>
-    <file>icons/icons8-plastic-100.png</file>
     <file>icons/icons8-shampoo-100_1.png</file>
     <file>icons/icons8-shampoo-100_2.png</file>
     <file>icons/icons8-t-65b-x-wing-starfighter-96.png</file>
@@ -18,10 +17,7 @@
     <file>icons/icons8-sine-100.png</file>
     <file>icons/icons8-book-100.png</file>
     <file>icons/icons8-electricity-100.png</file>
-    <file>icons/icons8-energy-window-100.png</file>
     <file>icons/icons8-integrated-circuit-100.png</file>
-    <file>icons/icons8-junction-100.png</file>
-    <file>icons/icons8-polarize-100.png</file>
     <file>icons/icons8-pressure-100.png</file>
     <file>icons/icons8-processor-100.png</file>
     <file>icons/icons8-pump-100.png</file>

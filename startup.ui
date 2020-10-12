@@ -128,19 +128,22 @@
           <string>Блок распределительный</string>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="spacing">
+           <number>2</number>
+          </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_1_blockRasp">
             <property name="leftMargin">
              <number>9</number>
             </property>
             <property name="topMargin">
-             <number>9</number>
+             <number>3</number>
             </property>
             <property name="rightMargin">
              <number>9</number>
             </property>
             <property name="bottomMargin">
-             <number>9</number>
+             <number>3</number>
             </property>
             <property name="spacing">
              <number>6</number>
@@ -207,17 +210,27 @@
              <number>9</number>
             </property>
             <property name="topMargin">
-             <number>9</number>
+             <number>3</number>
             </property>
             <property name="rightMargin">
              <number>9</number>
             </property>
             <property name="bottomMargin">
+             <number>3</number>
+            </property>
+            <property name="horizontalSpacing">
              <number>9</number>
             </property>
-            <property name="spacing">
+            <property name="verticalSpacing">
              <number>6</number>
             </property>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="pushButton_open_VE4">
+              <property name="text">
+               <string>Открыть VE4</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="1">
              <widget class="QPushButton" name="pushButton_close_VE4">
               <property name="text">
@@ -262,13 +275,6 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="pushButton_open_VE4">
-              <property name="text">
-               <string>Открыть VE4</string>
-              </property>
-             </widget>
-            </item>
            </layout>
           </item>
           <item>
@@ -292,6 +298,12 @@
              <bool>false</bool>
             </property>
             <layout class="QFormLayout" name="formLayout_3_blockRasp">
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
              <item row="0" column="0">
               <widget class="QLabel" name="label_temperature">
                <property name="frameShape">
@@ -360,19 +372,22 @@
           <string>Блок управления</string>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="spacing">
+           <number>3</number>
+          </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_1_blockUpr">
             <property name="leftMargin">
              <number>9</number>
             </property>
             <property name="topMargin">
-             <number>9</number>
+             <number>3</number>
             </property>
             <property name="rightMargin">
              <number>9</number>
             </property>
             <property name="bottomMargin">
-             <number>9</number>
+             <number>3</number>
             </property>
             <property name="spacing">
              <number>6</number>
@@ -462,15 +477,18 @@
              <number>9</number>
             </property>
             <property name="topMargin">
-             <number>9</number>
+             <number>3</number>
             </property>
             <property name="rightMargin">
              <number>9</number>
             </property>
             <property name="bottomMargin">
+             <number>3</number>
+            </property>
+            <property name="horizontalSpacing">
              <number>9</number>
             </property>
-            <property name="spacing">
+            <property name="verticalSpacing">
              <number>6</number>
             </property>
             <item row="1" column="0">
@@ -528,6 +546,15 @@
              <bool>true</bool>
             </property>
             <layout class="QFormLayout" name="formLayout_3_blockUpr">
+             <property name="topMargin">
+              <number>3</number>
+             </property>
+             <property name="rightMargin">
+              <number>9</number>
+             </property>
+             <property name="bottomMargin">
+              <number>3</number>
+             </property>
              <item row="0" column="0">
               <widget class="QLabel" name="label_P1_U">
                <property name="text">
@@ -611,7 +638,7 @@
          <enum>QTabWidget::Rounded</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab_blockDC">
          <attribute name="icon">
@@ -621,6 +648,143 @@
          <attribute name="title">
           <string>DC</string>
          </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>6</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>6</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_13">
+            <property name="leftMargin">
+             <number>9</number>
+            </property>
+            <property name="topMargin">
+             <number>6</number>
+            </property>
+            <property name="rightMargin">
+             <number>9</number>
+            </property>
+            <property name="bottomMargin">
+             <number>6</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushButton_enableDcBlock">
+              <property name="text">
+               <string>Вкл. блок</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_openDamperDc">
+              <property name="text">
+               <string>Откр. заслонку</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_posDamperDc">
+              <property name="text">
+               <string>Поз. заслонку</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QGridLayout" name="gridLayout">
+            <property name="leftMargin">
+             <number>9</number>
+            </property>
+            <property name="topMargin">
+             <number>6</number>
+            </property>
+            <property name="rightMargin">
+             <number>9</number>
+            </property>
+            <property name="bottomMargin">
+             <number>6</number>
+            </property>
+            <property name="horizontalSpacing">
+             <number>6</number>
+            </property>
+            <item row="0" column="1">
+             <widget class="QSpinBox" name="spinBox_CurrentDcMagnetron">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="checkBox_CurrentDcMagnetron">
+              <property name="text">
+               <string>Ток магнетрона</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_7">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_meas_blockDC">
+            <property name="title">
+             <string>Измерения</string>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+            <layout class="QFormLayout" name="formLayout">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_I_DcMagnetron">
+               <property name="text">
+                <string>I, магнетрона</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="label_isI_DcMagnetron">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_U_DcMagnetron">
+               <property name="text">
+                <string>U, магнетрона</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="label_isU_DcMagnetron">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="tab_blockRF">
          <attribute name="icon">
@@ -630,6 +794,327 @@
          <attribute name="title">
           <string>RF</string>
          </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_8">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="topMargin">
+           <number>6</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>6</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <property name="leftMargin">
+             <number>9</number>
+            </property>
+            <property name="topMargin">
+             <number>6</number>
+            </property>
+            <property name="rightMargin">
+             <number>9</number>
+            </property>
+            <property name="bottomMargin">
+             <number>6</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushButton_enableRfBlock">
+              <property name="text">
+               <string>Вкл. блок</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_openDamperRf">
+              <property name="text">
+               <string>Откр. заслонку</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_posDamperRf">
+              <property name="text">
+               <string>Поз. заслонку</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_PowerRFMagnetron">
+              <property name="text">
+               <string>Мощность (Вт)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="spinBox_powerRfMagnetron">
+              <property name="maximum">
+               <number>500</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="gridLayout_8">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <item row="0" column="1">
+               <widget class="QLabel" name="label_C1Rf">
+                <property name="text">
+                 <string>С1</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="QLabel" name="label_C2Rf">
+                <property name="text">
+                 <string>С2</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="pushButton_upC1">
+                <property name="maximumSize">
+                 <size>
+                  <width>26</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/icons/icons/up-chevron.png</normaloff>:/icons/icons/up-chevron.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QPushButton" name="pushButton_upC2">
+                <property name="maximumSize">
+                 <size>
+                  <width>26</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/icons/icons/up-chevron.png</normaloff>:/icons/icons/up-chevron.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QPushButton" name="pushButton_downC2">
+                <property name="maximumSize">
+                 <size>
+                  <width>26</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/icons/icons/down-chevron.png</normaloff>:/icons/icons/down-chevron.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="pushButton_downC1">
+                <property name="maximumSize">
+                 <size>
+                  <width>26</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/icons/icons/down-chevron.png</normaloff>:/icons/icons/down-chevron.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="4">
+               <widget class="QPushButton" name="pushButton_sputteringRf">
+                <property name="text">
+                 <string>Напыление</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="4">
+               <widget class="QPushButton" name="pushButton_sputteringDc">
+                <property name="text">
+                 <string>Установить</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <spacer name="horizontalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="1" column="3">
+               <spacer name="horizontalSpacer_6">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_meas_blockRf">
+            <property name="title">
+             <string>Измерения</string>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_5">
+             <item row="2" column="2">
+              <widget class="QLabel" name="label_KBV">
+               <property name="text">
+                <string>КБВ</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_I_RfAnode">
+               <property name="text">
+                <string>I, анода</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_PowerRf">
+               <property name="text">
+                <string>Мощность</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_I_RfDriver">
+               <property name="text">
+                <string>I, драйвера</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="label_isPowerRf">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QLabel" name="label_I_RfMagnetron">
+               <property name="text">
+                <string>I, магнетрона</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QLabel" name="label_URfMagnetron">
+               <property name="text">
+                <string>U, магнетрона</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="3">
+              <widget class="QLabel" name="label_isKBV">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLabel" name="label_isI_RfAnode">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLabel" name="label_IsI_RfDriver">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="3">
+              <widget class="QLabel" name="label_isU_RfMagnetron">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="3">
+              <widget class="QLabel" name="label_IsI_RfMagnetron">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </widget>
       </item>
@@ -1087,7 +1572,6 @@ border-radius :7px;
   </widget>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
   <include location="resources.qrc"/>
  </resources>
  <connections/>
