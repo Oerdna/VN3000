@@ -206,18 +206,18 @@
      units="px"
      inkscape:window-maximized="1"
      inkscape:window-y="-8"
-     inkscape:window-x="54"
+     inkscape:window-x="56"
      inkscape:window-height="745"
-     inkscape:window-width="1304"
+     inkscape:window-width="1302"
      inkscape:guide-bbox="true"
      showguides="true"
      showgrid="false"
      inkscape:document-rotation="0"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g282"
      inkscape:document-units="px"
-     inkscape:cy="256.84612"
-     inkscape:cx="155.14398"
-     inkscape:zoom="1"
+     inkscape:cy="474.43419"
+     inkscape:cx="270.46277"
+     inkscape:zoom="2.8284271"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -1762,9 +1762,9 @@
          y="123.15499" />
     </g>
     <g
-       transform="translate(130,276)"
-       id="g1099">
+       id="g282">
       <path
+         d="m 178.64894,178.81264 15.58846,27 15.58846,27 -31.17692,0 -31.17691,0 15.58845,-27 z"
          sodipodi:type="star"
          style="fill:#ff0000;fill-opacity:1;stroke:#ffd42a;stroke-width:5.58618;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:markers fill stroke"
          id="path1090"
@@ -1778,20 +1778,21 @@
          inkscape:flatsided="false"
          inkscape:rounded="0"
          inkscape:randomized="0"
-         d="m 178.64894,178.81264 15.58846,27 15.58846,27 -31.17692,0 -31.17691,0 15.58845,-27 z"
          inkscape:transform-center-y="-6.189288"
-         transform="matrix(0.74557627,0,0,0.68769876,45.284015,64.523042)" />
+         transform="matrix(0.74557627,0,0,0.68769876,175.28401,340.52304)" />
       <text
+         inkscape:transform-center-x="-0.69879681"
+         id="text2634-4-2-5"
+         y="496.76855"
+         x="303.54221"
+         style="font-style:normal;font-weight:normal;font-size:30.6005px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.765011"
          xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;fill:#fffffe;fill-opacity:1;stroke:none"
-         x="172.18355"
-         y="219.69304"
-         id="text1094"><tspan
-           sodipodi:role="line"
-           id="tspan1092"
-           x="172.18355"
-           y="219.69304"
-           style="font-size:32px">!</tspan></text>
+         inkscape:transform-center-y="1.2951143e-05"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Microsoft JhengHei UI';-inkscape-font-specification:'Microsoft JhengHei UI Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.765011"
+           y="496.76855"
+           x="303.54221"
+           id="tspan2632-6-77-2"
+           sodipodi:role="line">!</tspan></text>
     </g>
   </g>
 </svg>
