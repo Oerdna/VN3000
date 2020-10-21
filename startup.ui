@@ -105,7 +105,7 @@
          <bool>true</bool>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <property name="usesScrollButtons">
          <bool>false</bool>
@@ -246,6 +246,12 @@
               <property name="icon">
                <iconset resource="resources.qrc">
                 <normaloff>:/icons/icons/turbine.png</normaloff>:/icons/icons/turbine.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
               </property>
               <property name="checkable">
                <bool>true</bool>
@@ -545,20 +551,35 @@
             <property name="flat">
              <bool>true</bool>
             </property>
-            <layout class="QFormLayout" name="formLayout_3_blockUpr">
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="rightMargin">
-              <number>9</number>
-             </property>
-             <property name="bottomMargin">
-              <number>3</number>
-             </property>
+            <layout class="QGridLayout" name="gridLayout_4">
+             <item row="0" column="3">
+              <widget class="QLabel" name="label_isZQ1_U">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QLabel" name="label_isZQ2_U">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_ZQ1_U">
+               <property name="text">
+                <string>U, ZQ1</string>
+               </property>
+              </widget>
+             </item>
              <item row="0" column="0">
               <widget class="QLabel" name="label_P1_U">
+               <property name="layoutDirection">
+                <enum>Qt::RightToLeft</enum>
+               </property>
                <property name="text">
-                <string>Напряжение P1</string>
+                <string>U, P1</string>
                </property>
               </widget>
              </item>
@@ -569,10 +590,17 @@
                </property>
               </widget>
              </item>
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_ZQ2_U">
+               <property name="text">
+                <string>U, ZQ2</string>
+               </property>
+              </widget>
+             </item>
              <item row="1" column="0">
               <widget class="QLabel" name="label_P2_U">
                <property name="text">
-                <string>Напряжение P2</string>
+                <string>U, P2</string>
                </property>
               </widget>
              </item>
@@ -584,41 +612,13 @@
               </widget>
              </item>
              <item row="2" column="0">
-              <widget class="QLabel" name="label_ZQ1_U">
+              <widget class="QLabel" name="label_PG_I">
                <property name="text">
-                <string>Напряжение ZQ1</string>
+                <string>I эмисси, PG</string>
                </property>
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QLabel" name="label_isZQ1_U">
-               <property name="text">
-                <string>TextLabel</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_ZQ2_U">
-               <property name="text">
-                <string>Напряжение ZQ2</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLabel" name="label_isZQ2_U">
-               <property name="text">
-                <string>TextLabel</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_PG_I">
-               <property name="text">
-                <string>Ток эмисси PG</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
               <widget class="QLabel" name="label_isPG_I">
                <property name="text">
                 <string>TextLabel</string>
@@ -638,7 +638,7 @@
          <enum>QTabWidget::Rounded</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_blockDC">
          <attribute name="icon">
@@ -677,24 +677,80 @@
             </property>
             <item>
              <widget class="QPushButton" name="pushButton_enableDcBlock">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>110</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>110</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
                <string>Вкл. блок</string>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_openDamperDc">
-              <property name="text">
-               <string>Откр. заслонку</string>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/icons/icons/icons8-enable52.png</normaloff>:/icons/icons/icons8-enable52.png</iconset>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_posDamperDc">
+             <widget class="QPushButton" name="pushButton_CurrentDcMagnetron">
+              <property name="minimumSize">
+               <size>
+                <width>111</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>111</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
-               <string>Поз. заслонку</string>
+               <string>Установить</string>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/icons/icons/icons8-fast.png</normaloff>:/icons/icons/icons8-fast.png</iconset>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
               </property>
              </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_9">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </item>
@@ -715,20 +771,6 @@
             <property name="horizontalSpacing">
              <number>6</number>
             </property>
-            <item row="0" column="1">
-             <widget class="QSpinBox" name="spinBox_CurrentDcMagnetron">
-              <property name="maximum">
-               <number>255</number>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QCheckBox" name="checkBox_CurrentDcMagnetron">
-              <property name="text">
-               <string>Ток магнетрона</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="2">
              <spacer name="horizontalSpacer_7">
               <property name="orientation">
@@ -741,6 +783,20 @@
                </size>
               </property>
              </spacer>
+            </item>
+            <item row="0" column="1">
+             <widget class="QSpinBox" name="spinBox_CurrentDcMagnetron">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_CurrentDcMagnetron">
+              <property name="text">
+               <string>Ток магнетрона</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -826,19 +882,36 @@
               <property name="text">
                <string>Вкл. блок</string>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_openDamperRf">
-              <property name="text">
-               <string>Откр. заслонку</string>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/icons/icons/icons8-enable52.png</normaloff>:/icons/icons/icons8-enable52.png</iconset>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_posDamperRf">
+             <widget class="QPushButton" name="pushButton_sputteringRf">
               <property name="text">
-               <string>Поз. заслонку</string>
+               <string>Напыление</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_sputteringDc">
+              <property name="text">
+               <string>Установить</string>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/icons/icons/icons8-fast.png</normaloff>:/icons/icons/icons8-fast.png</iconset>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -847,7 +920,13 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_11">
             <property name="spacing">
-             <number>4</number>
+             <number>6</number>
+            </property>
+            <property name="leftMargin">
+             <number>9</number>
+            </property>
+            <property name="rightMargin">
+             <number>9</number>
             </property>
             <item>
              <widget class="QLabel" name="label_PowerRFMagnetron">
@@ -864,24 +943,20 @@
              </widget>
             </item>
             <item>
-             <layout class="QGridLayout" name="gridLayout_8">
-              <property name="spacing">
-               <number>4</number>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
               </property>
-              <item row="0" column="1">
-               <widget class="QLabel" name="label_C1Rf">
-                <property name="text">
-                 <string>С1</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="3">
-               <widget class="QLabel" name="label_C2Rf">
-                <property name="text">
-                 <string>С2</string>
-                </property>
-               </widget>
-              </item>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="gridLayout_2">
               <item row="0" column="0">
                <widget class="QPushButton" name="pushButton_upC1">
                 <property name="maximumSize">
@@ -903,51 +978,8 @@
                   <height>20</height>
                  </size>
                 </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="QPushButton" name="pushButton_upC2">
-                <property name="maximumSize">
-                 <size>
-                  <width>26</width>
-                  <height>26</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="resources.qrc">
-                  <normaloff>:/icons/icons/up-chevron.png</normaloff>:/icons/icons/up-chevron.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>20</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2">
-               <widget class="QPushButton" name="pushButton_downC2">
-                <property name="maximumSize">
-                 <size>
-                  <width>26</width>
-                  <height>26</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="resources.qrc">
-                  <normaloff>:/icons/icons/down-chevron.png</normaloff>:/icons/icons/down-chevron.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>20</width>
-                  <height>20</height>
-                 </size>
+                <property name="shortcut">
+                 <string>1, R, Up</string>
                 </property>
                </widget>
               </item>
@@ -972,51 +1004,123 @@
                   <height>20</height>
                  </size>
                 </property>
-               </widget>
-              </item>
-              <item row="0" column="4">
-               <widget class="QPushButton" name="pushButton_sputteringRf">
-                <property name="text">
-                 <string>Напыление</string>
+                <property name="shortcut">
+                 <string>1, R, Down</string>
                 </property>
                </widget>
-              </item>
-              <item row="1" column="4">
-               <widget class="QPushButton" name="pushButton_sputteringDc">
-                <property name="text">
-                 <string>Установить</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <spacer name="horizontalSpacer">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="1" column="3">
-               <spacer name="horizontalSpacer_6">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
               </item>
              </layout>
             </item>
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>C1</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="gridLayout_3">
+              <item row="0" column="0">
+               <widget class="QPushButton" name="pushButton_upC2">
+                <property name="maximumSize">
+                 <size>
+                  <width>26</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/icons/icons/up-chevron.png</normaloff>:/icons/icons/up-chevron.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="shortcut">
+                 <string>2, R, Up</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="pushButton_downC2">
+                <property name="maximumSize">
+                 <size>
+                  <width>26</width>
+                  <height>26</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/icons/icons/down-chevron.png</normaloff>:/icons/icons/down-chevron.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="shortcut">
+                 <string>2, R, Down</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>C2</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
            </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_meas_blockRf">

@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons/capacitor.png</file>
+    <file>icons/icons8-fast.png</file>
+    <file>icons/icons8-enable52.png</file>
     <file>icons/down-chevron.png</file>
     <file>icons/up-chevron.png</file>
     <file>icons/turbine.png</file>

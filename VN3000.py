@@ -6,6 +6,7 @@ import time
 from pprint import pprint
 from blockUpr import BlockUPR
 from blockRasp import BlockRasp
+from blockDC import BlockDC
 from Parser import Parser
 
 
@@ -38,7 +39,10 @@ class VN3000:
 
         self.blk_upr = BlockUPR(self.bus)
         self.blk_rasp = BlockRasp(self.bus)
-        self.parser = Parser(blockUpr=self.blk_upr, blockRasp=self.blk_rasp)
+        self.blk_dc = BlockDC(self.bus)
+        self.parser = Parser(
+            blockUpr=self.blk_upr, blockRasp=self.blk_rasp, blockDc=self.blk_dc,
+        )
 
     def star_work(self):
         """Getting started, the foundation of the program"""
@@ -48,16 +52,27 @@ class VN3000:
         self.blk_upr.get_measurements()
         self.blk_rasp.get_states()
         self.blk_rasp.get_measurements()
+        self.blk_dc.get_states()
+        self.blk_dc.get_measurements()
 
         self.reader_m4()
         time.sleep(1)
 
-        k = self.blk_upr.return_states_mes()
-        l = self.blk_rasp.return_states_mes()
+        upr = self.blk_upr.return_states_mes()
+        ras = self.blk_rasp.return_states_mes()
+        dc = self.blk_dc.return_states_mes()
         print("Status block Upr:")
-        pprint(k)
+        pprint(upr)
         print("Status block Rasp:")
-        pprint(l)
+        pprint(ras)
+        print("Status block DC")
+        pprint(dc)
+
+    def get_measurements(self):
+        self.blk_upr.get_measurements()
+        self.blk_rasp.get_measurements()
+        if self.blk_dc.block_dc_enable:
+            self.blk_dc.get_measurements()
 
     def end_work(self):
         """Close CAN-USB bus and clear other stuff"""
@@ -242,7 +257,7 @@ class VN3000:
             and self.blk_upr.pressure_ch < self.pressureSensorPG_enable
         ):
             self.blk_upr.set_sensor_PG(True)
-        elif self.self.blk_upr.pressure_ch > self.pressureSensorPG_enable:
+        elif self.blk_upr.pressure_ch > self.pressureSensorPG_enable:
             return -10
 
     def disable_PG(self):
@@ -328,6 +343,68 @@ class VN3000:
         """
         self.blk_rasp.set_rotation(False)
 
+    def enable_dc_block(self):
+        """Enable dc block
+            | Cheking: block state, chamber, VE1, water
+        """
+        if (
+            self.blk_dc.block_dc_state == True
+            and self.blk_rasp.state_chmb_open == False
+            and self.blk_upr.state_VE1 == False
+            and self.blk_upr.water_2 == True
+            and self.blk_dc.block_dc_enable == False
+        ):
+            self.blk_dc.state_block_dc(True)
+        elif self.blk_upr.state_VE1 == True:
+            return -8
+        elif self.blk_upr.water_2 == False:
+            return -14
+        elif self.blk_rasp.state_chmb_open == True:
+            return -9
+        elif self.blk_dc.block_dc_state == False:
+            return -16
+
+    def disable_dc_block(self):
+        """Disable dc block
+        """
+        if self.blk_dc.block_dc_enable == True:
+            self.disable_dc_sputtering()
+            self.blk_dc.state_block_dc(False)
+
+    def enable_dc_sputtering(self, value):
+        """Enable sputtering:
+            | Cheking: block enable, water, VE1, chamber
+        """
+        if (
+            self.blk_dc.block_dc_enable == True
+            and self.blk_rasp.state_chmb_open == False
+            and self.blk_upr.state_VE1 == False
+            and self.blk_upr.water_2 == True
+        ):
+            self.blk_dc.current_dc(True, value)
+        elif self.blk_rasp.state_chmb_open == True:
+            return -9
+        elif self.blk_upr.state_VE1 == True:
+            return -8
+        elif self.blk_upr.water_2 == False:
+            return -14
+        elif self.blk_dc.block_dc_enable == False:
+            return -15
+
+    def change_dc_sputtering(self, value):
+        """Change current for dc block
+        """
+        if 0 <= value <= 255:
+            self.blk_dc.range_current = value
+
+    def get_dc_sputtering(self):
+        return self.blk_dc.range_current
+
+    def disable_dc_sputtering(self):
+        """Disable sputtering
+        """
+        self.blk_dc.current_dc(False)
+
     def reader_m2(self):
         """Method 2 for read recv msg from bus
         """
@@ -340,8 +417,7 @@ class VN3000:
         """Method 4
         """
         print("Read from Bus: M4")
-        loop = asyncio.get_event_loop()
-        self.noti = can.Notifier(self.bus, [self.parser.read_input], loop=loop)
+        self.noti = can.Notifier(self.bus, [self.parser.read_input])
 
     def get_values_for_update(self):
         """
@@ -349,7 +425,8 @@ class VN3000:
         """
         rasp = self.blk_rasp.return_mes()
         upr = self.blk_upr.return_mes()
-        return {**rasp, **upr}
+        dc = self.blk_dc.return_mes()
+        return {**rasp, **upr, **dc}
 
     def get_values_for_states(self):
         """
@@ -357,4 +434,5 @@ class VN3000:
         """
         rasp = self.blk_rasp.return_states()
         upr = self.blk_upr.return_states()
-        return {**rasp, **upr}
+        dc = self.blk_dc.return_states()
+        return {**rasp, **upr, **dc}

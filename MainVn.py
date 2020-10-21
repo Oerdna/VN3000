@@ -102,6 +102,9 @@ class MainWindow(QMainWindow):
         self.CodeDict[-11] = "Проблемы с фазой!"
         self.CodeDict[-12] = "Давление в камере больше разрешенного!"
         self.CodeDict[-13] = "Остановка насоса длится в течении 50 мин!"
+        self.CodeDict[-14] = "Нет охлаждения магнетрона!"
+        self.CodeDict[-15] = "Блок DC магнетрона не включён!"
+        self.CodeDict[-16] = "Нет связи с блоком DC магнетрона!"
 
         """
         Text aboout
@@ -178,6 +181,12 @@ class MainWindow(QMainWindow):
         # self.pushButton_settings.clicked.connect()
 
         """
+        Method to control DC block
+        """
+        self.pushButton_enableDcBlock.clicked.connect(self.ButtonDCHandler)
+        self.pushButton_CurrentDcMagnetron.clicked.connect(self.ButtonSputteringHandler)
+        self.spinBox_CurrentDcMagnetron.valueChanged.connect(self.changeDCcurrent)
+        """
         Add and rule scene - scheme
         """
         self.scene = Scene()
@@ -202,6 +211,44 @@ class MainWindow(QMainWindow):
         self.timer.setInterval(500)
         self.timer.timeout.connect(self.updateMeasurement)
         self.timer.start()
+
+    """
+    Control Dc block
+    """
+
+    def ButtonDCHandler(self):
+        if self.pushButton_enableDcBlock.isChecked():
+            self.EnableDC()
+        else:
+            self.DisableDC()
+
+    def EnableDC(self):
+        self.DialogMsg(self.vn3000.enable_dc_block(), self.pushButton_enableDcBlock)
+
+    def DisableDC(self):
+        self.DialogMsg(self.vn3000.disable_dc_block(), self.pushButton_enableDcBlock)
+
+    def ButtonSputteringHandler(self):
+        if self.pushButton_CurrentDcMagnetron.isChecked():
+            self.EnableSputtering()
+        else:
+            self.DisableSputtering()
+
+    def EnableSputtering(self):
+        self.DialogMsg(
+            self.vn3000.enable_dc_sputtering(self.vn3000.get_dc_sputtering()),
+            self.pushButton_CurrentDcMagnetron,
+        )
+
+    def DisableSputtering(self):
+        self.DialogMsg(
+            self.vn3000.disable_dc_sputtering(), self.pushButton_CurrentDcMagnetron
+        )
+
+    def changeDCcurrent(self):
+        self.vn3000.change_dc_sputtering(self.spinBox_CurrentDcMagnetron.value())
+        if self.pushButton_CurrentDcMagnetron.isChecked() == True:
+            self.vn3000.enable_dc_sputtering(self.vn3000.get_dc_sputtering())
 
     """
     Control of substrate
@@ -371,10 +418,11 @@ class MainWindow(QMainWindow):
 
     def EnablePG(self):
         self.DialogMsg(self.vn3000.enable_PG(), self.pushButton_PG)
-        self.progressBar_PG.setVisible(True)
-        self.label_isPG.setVisible(True)
-        self.label_pressure_PG.setVisible(True)
-        self.label_PG.setVisible(True)
+        if self.pushButton_PG.isChecked():
+            self.progressBar_PG.setVisible(True)
+            self.label_isPG.setVisible(True)
+            self.label_pressure_PG.setVisible(True)
+            self.label_PG.setVisible(True)
 
     def DisablePG(self):
         self.vn3000.disable_PG()
@@ -408,8 +456,7 @@ class MainWindow(QMainWindow):
         """
         Update the labels every 0.5 seconds using a QTimer
         """
-        self.vn3000.blk_rasp.get_measurements()
-        self.vn3000.blk_upr.get_measurements()
+        self.vn3000.get_measurements()
         """
         Get kwargs from VN3000
         """
@@ -428,6 +475,8 @@ class MainWindow(QMainWindow):
         self.label_istemperature.setText("{mes_temperature}, ℃".format(**kwargsMeas))
         self.label_iscurrent_heat.setText("{mes_current}, А".format(**kwargsMeas))
         self.label_isspeed.setText("{mes_speed}, об/мин".format(**kwargsMeas))
+        self.label_isI_DcMagnetron.setText("{mes_current_dc}, мА".format(**kwargsMeas))
+        self.label_isU_DcMagnetron.setText("{mes_voltage_dc}, В".format(**kwargsMeas))
         """
         Check waters
         """
@@ -535,6 +584,9 @@ class MainWindow(QMainWindow):
         self.spinBox_current_heat.setValue(kwargsStats["seted_cur_heat"])
         self.checkBox_rotation_substrate.setChecked(kwargsStats["state_rotation"])
         self.spinBox_Speed.setValue(kwargsStats["seted_rot_speed"])
+        self.spinBox_CurrentDcMagnetron.setValue(kwargsStats["range_current"])
+        self.pushButton_enableDcBlock.setChecked(kwargsStats["block_dc_enable"])
+        self.pushButton_CurrentDcMagnetron.setChecked(kwargsStats["current_state"])
         """PG Logic
         """
         if kwargsStats["state_PG"] == True:

@@ -94,100 +94,86 @@ class BlockRasp:
         self.msg_send_upr = can.Message(
             arbitration_id=self.id_blockRasp_command,
             is_extended_id=True,
-            dlc=8,
-            data=bytearray(8),
+            dlc=4,
+            data=bytearray(4),
         )
 
     def get_states(self):
         """call to get the actual states of the units.
         """
-        msg = self.msg_send_upr
-        msg.data[0] = b"\x0f"[0]
-        self.send_and_flush(msg)
+        self.msg_send_upr.data[0] = b"\x0f"[0]
+        self.send_and_flush(self.msg_send_upr)
 
     def get_measurements(self):
         """called to get values from sensors.
         """
-        msg = self.msg_send_upr
-        msg.data[0] = b"\xff"[0]
-        self.send_and_flush(msg)
+        self.msg_send_upr.data[0] = b"\xff"[0]
+        self.send_and_flush(self.msg_send_upr)
 
     def set_pump(self, pump: str, state: bool):
         """turns on / off pumps.
         """
         if pump == "NF":
             if state:
-                msg = self.msg_send_upr
-                msg.data[:3] = [0x11, 0x00, 0x01]
+                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x01]
             else:
-                msg = self.msg_send_upr
-                msg.data[:3] = [0x11, 0x00, 0x02]
+                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x02]
         elif pump == "NT":
             if state:
-                msg = self.msg_send_upr
-                msg.data[:3] = [0x11, 0x00, 0x03]
+                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x03]
             else:
-                msg = self.msg_send_upr
-                msg.data[:3] = [0x11, 0x00, 0x04]
-        self.send_and_flush(msg)
+                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x04]
+        self.send_and_flush(self.msg_send_upr)
 
     def set_valve_VE4(self, state: bool, gap=None):
         """Open and close valve VE4.
         """
         if gap is None:
             if state:
-                msg = self.msg_send_upr
-                msg.data[:3] = [0x11, 0x00, 0x05]
+                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x05]
             else:
-                msg = self.msg_send_upr
-                msg.data[:3] = [0x11, 0x00, 0x06]
+                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x06]
         else:
-            msg = self.msg_send_upr
-            msg.data[:3] = [0x11, 0x00, 0x10]
-        self.send_and_flush(msg)
+            self.msg_send_upr.data[:3] = [0x11, 0x00, 0x10]
+        self.send_and_flush(self.msg_send_upr)
 
     def set_throttling(self, state: bool, value: int = 0):
         """USELESS, NEED POTENTIOMETER ||
         Enable throttling mode. (This mode is not used (reserve))    
         """
         if state:
-            msg = self.msg_send_upr
-            msg.data[0] = b"\x26"[0]
-            msg.data[2] = value
+            self.msg_send_upr.data[0] = b"\x26"[0]
+            self.msg_send_upr.data[2] = value
         else:
-            msg = self.msg_send_upr
-            msg.data[:3] = b"\x27"[0]
-        self.send_and_flush(msg)
+            self.msg_send_upr.data[:3] = b"\x27"[0]
+        self.send_and_flush(self.msg_send_upr)
 
     def set_heat(self, state: bool, value: int = 0):
         """Enable or disable heat of substrate
         """
         if state:
-            msg = self.msg_send_upr
-            msg.data[0] = b"\x22"[0]
-            msg.data[2:4] = value.to_bytes(2, "little")
+            self.msg_send_upr.data[0] = b"\x22"[0]
+            self.msg_send_upr.data[2:4] = value.to_bytes(2, "little")
         else:
-            msg = self.msg_send_upr
-            msg.data[0] = b"\x23"[0]
-        self.send_and_flush(msg)
+            self.msg_send_upr.data[0] = b"\x23"[0]
+        self.send_and_flush(self.msg_send_upr)
 
     def set_rotation(self, state: bool, value: int = 0):
         """Enable or disable rotatoin of substrate
         """
         if state:
-            msg = self.msg_send_upr
-            msg.data[0] = b"\x24"[0]
-            msg.data[2] = value
+            self.msg_send_upr.data[0] = b"\x24"[0]
+            self.msg_send_upr.data[2] = value
         else:
-            msg = self.msg_send_upr
-            msg.data[0] = b"\x25"[0]
-        self.send_and_flush(msg)
+            self.msg_send_upr.data[0] = b"\x25"[0]
+        self.send_and_flush(self.msg_send_upr)
 
     def send_and_flush(self, msg):
         """Send fun with callbcak Eror
         """
         try:
             self.bus.send(msg)
+            msg.data[:4] = bytearray(4)
             # print("Message sent on {}".format(self.bus.channel_info))
         except can.CanError:
             print("Message NOT sent")

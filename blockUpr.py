@@ -98,98 +98,83 @@ class BlockUPR:
         self.msg_send_upr = can.Message(
             arbitration_id=self.id_blockUPR_command,
             is_extended_id=True,
-            dlc=8,
-            data=bytearray(8),
+            dlc=4,
+            data=bytearray(4),
         )
 
     def get_states(self):
         """call to get the actual states of the units.
         """
-        msg = self.msg_send_upr
-        msg.data[0] = b"\x0f"[0]
-        self.send_and_flush(msg)
+        self.msg_send_upr.data[0] = b"\x0f"[0]
+        self.send_and_flush(self.msg_send_upr)
 
     def get_measurements(self):
         """called to get values from sensors.
         """
-        msg = self.msg_send_upr
-        msg.data[0] = b"\xff"[0]
-        self.send_and_flush(msg)
+        self.msg_send_upr.data[0] = b"\xff"[0]
+        self.send_and_flush(self.msg_send_upr)
 
     def set_valve(self, VE: str, state: bool):
         """Opens and close valve.
         """
         if VE == "VE1":
             if state:
-                msg = self.msg_send_upr
-                msg.data[:3] = [0x11, 0x00, 0x10]
+                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x10]
             else:
-                msg = self.msg_send_upr
-                msg.data[:3] = [0x11, 0x00, 0x1F]
+                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x1F]
         elif VE == "VE2":
             if state:
-                msg = self.msg_send_upr
-                msg.data[:3] = [0x11, 0x00, 0x20]
+                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x20]
             else:
-                msg = self.msg_send_upr
-                msg.data[:3] = [0x11, 0x00, 0x2F]
+                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x2F]
         elif VE == "VE3":
             if state:
-                msg = self.msg_send_upr
-                msg.data[:3] = [0x11, 0x00, 0x30]
+                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x30]
             else:
-                msg = self.msg_send_upr
-                msg.data[:3] = [0x11, 0x00, 0x3F]
-        self.send_and_flush(msg)
+                self.msg_send_upr.data[:3] = [0x11, 0x00, 0x3F]
+        self.send_and_flush(self.msg_send_upr)
 
     def set_sound(self, state: bool):
         """toggle sound state.
         """
         if state:
-            msg = self.msg_send_upr
-            msg.data[0] = b"\xa0"[0]
+            self.msg_send_upr.data[0] = b"\xa0"[0]
         else:
-            msg = self.msg_send_upr
-            msg.data[0] = b"\xaf"[0]
-        self.send_and_flush(msg)
+            self.msg_send_upr.data[0] = b"\xaf"[0]
+        self.send_and_flush(self.msg_send_upr)
 
     def set_sensor_PG(self, state: bool):
         """toggle PG sensor state.
         """
         if state:
-            msg = self.msg_send_upr
-            msg.data[0] = b"\x22"[0]
+            self.msg_send_upr.data[0] = b"\x22"[0]
         else:
-            msg = self.msg_send_upr
-            msg.data[0] = b"\x23"[0]
-        self.send_and_flush(msg)
+            self.msg_send_upr.data[0] = b"\x23"[0]
+        self.send_and_flush(self.msg_send_upr)
 
     def set_gas_inlet(self, name: str, state: bool, value: int = 0):
         """gas flow control.
         """
         if name == "ZQ1":
             if state:
-                msg = self.msg_send_upr
-                msg.data[0] = b"\x40"[0]
-                msg.data[2] = value
+                self.msg_send_upr.data[0] = b"\x40"[0]
+                self.msg_send_upr.data[2] = value
             else:
-                msg = self.msg_send_upr
-                msg.data[0] = b"\x4f"[0]
+                self.msg_send_upr.data[0] = b"\x4f"[0]
         elif name == "ZQ2":
             if state:
-                msg = self.msg_send_upr
-                msg.data[0] = b"\x50"[0]
-                msg.data[2] = value
+                self.msg_send_upr.data[0] = b"\x50"[0]
+                self.msg_send_upr.data[2] = value
             else:
-                msg = self.msg_send_upr
-                msg.data[0] = b"\x5f"[0]
-        self.send_and_flush(msg)
+                self.msg_send_upr.data[0] = b"\x5f"[0]
+        self.send_and_flush(self.msg_send_upr)
 
     def send_and_flush(self, msg):
         """Send fun with callbcak Eror
         """
         try:
             self.bus.send(msg)
+            msg.data[:4] = bytearray(4)
             # print("Message sent on {}".format(self.bus.channel_info))
         except can.CanError:
             print("Message NOT sent")

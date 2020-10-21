@@ -11,6 +11,8 @@ class Parser:
         "id_blockUPR_measurements": 0x181E0E60,
         "id_blockRasp_measurements": 0x101E0060,
         "id_blockRasp_events": 0x101E0065,
+        "id_blockDc_measurements": 0x101E0001,
+        "id_blockDC_events": 0x101E0005,
     }
 
     data_mes_upr = {
@@ -28,9 +30,16 @@ class Parser:
         "mes_current_and_speed": 0x01,
     }
 
-    def __init__(self, blockUpr: object, blockRasp: object):
+    data_mes_dc = {
+        "current_and_voltage": 0x01,
+        "seted_current": 0x02,
+        "state_block": 0x0A,
+    }
+
+    def __init__(self, blockUpr: object, blockRasp: object, blockDc: object):
         self.blockUpr = blockUpr
         self.blockRasp = blockRasp
+        self.blockDc = blockDc
 
     def read_input(self, msg):
         if msg.arbitration_id == self.dict_id["id_blockUPR_measurements"]:
@@ -41,6 +50,10 @@ class Parser:
             self.blockRasp_measurements(msg)
         elif msg.arbitration_id == self.dict_id["id_blockRasp_events"]:
             self.blockRasp_events(msg)
+        elif msg.arbitration_id == self.dict_id["id_blockDc_measurements"]:
+            self.blockDc_measurements(msg)
+        elif msg.arbitration_id == self.dict_id["id_blockDC_events"]:
+            self.blockDc_events(msg)
 
     def blockUPR_measurements(self, msg):
         """Measurement processing by data[0]
@@ -185,3 +198,29 @@ class Parser:
                     self.blockRasp.state_rotation = True
                 elif msg.data[2] & 15 == 5:
                     self.blockRasp.state_rotation = False
+
+    def blockDc_measurements(self, msg):
+        if msg.data[0] == self.data_mes_dc["current_and_voltage"]:
+            self.blockDc.mes_current_dc = struct.unpack("<H", msg.data[4:6])[0]
+            self.blockDc.mes_voltage_dc = struct.unpack("<H", msg.data[6:8])[0]
+        elif msg.data[0] == self.data_mes_dc["seted_current"]:
+            self.blockDc.mes_seted_cur_dc = struct.unpack("<H", msg.data[6:8])[0]
+        elif msg.data[0] == self.data_mes_dc["state_block"]:
+            self.blockDc.block_dc_state = True
+            self.blockDc.block_dc_enable = True if msg.data[3] & 1 else False
+            self.blockDc.current_state = True if msg.data[3] & 2 else False
+            self.blockDc.range_current = struct.unpack("<H", msg.data[4:6])[0]
+
+    def blockDc_events(self, msg):
+        if msg.data[2] & 240 == 16:
+            if msg.data[2] & 15 == 1:
+                self.blockDc.block_dc_state = True
+            elif msg.data[2] & 15 == 4:
+                self.blockDc.block_dc_enable = True
+            elif msg.data[2] & 15 == 5:
+                self.blockDc.block_dc_enable = False
+            elif msg.data[2] & 15 == 8:
+                self.blockDc.current_state = True
+            elif msg.data[2] & 15 == 9:
+                self.blockDc.current_state = False
+
