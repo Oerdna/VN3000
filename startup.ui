@@ -105,7 +105,7 @@
          <bool>true</bool>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="usesScrollButtons">
          <bool>false</bool>
@@ -131,79 +131,6 @@
           <property name="spacing">
            <number>2</number>
           </property>
-          <item>
-           <layout class="QGridLayout" name="gridLayout_1_blockRasp">
-            <property name="leftMargin">
-             <number>9</number>
-            </property>
-            <property name="topMargin">
-             <number>3</number>
-            </property>
-            <property name="rightMargin">
-             <number>9</number>
-            </property>
-            <property name="bottomMargin">
-             <number>3</number>
-            </property>
-            <property name="spacing">
-             <number>6</number>
-            </property>
-            <item row="0" column="1">
-             <widget class="QSpinBox" name="spinBox_current_heat">
-              <property name="maximum">
-               <number>5500</number>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QCheckBox" name="checkBox_rotation_substrate">
-              <property name="text">
-               <string>Вращение подложки</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QSpinBox" name="spinBox_Speed">
-              <property name="maximum">
-               <number>100</number>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QCheckBox" name="checkBox_currnet_heat">
-              <property name="text">
-               <string>Нагрев подложки</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="1" column="2">
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
           <item>
            <layout class="QGridLayout" name="gridLayout_2_blockRasp">
             <property name="leftMargin">
@@ -284,6 +211,79 @@
            </layout>
           </item>
           <item>
+           <layout class="QGridLayout" name="gridLayout_1_blockRasp">
+            <property name="leftMargin">
+             <number>9</number>
+            </property>
+            <property name="topMargin">
+             <number>3</number>
+            </property>
+            <property name="rightMargin">
+             <number>9</number>
+            </property>
+            <property name="bottomMargin">
+             <number>3</number>
+            </property>
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <item row="0" column="1">
+             <widget class="QSpinBox" name="spinBox_current_heat">
+              <property name="maximum">
+               <number>5500</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QCheckBox" name="checkBox_rotation_substrate">
+              <property name="text">
+               <string>Вращение подложки</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QSpinBox" name="spinBox_Speed">
+              <property name="maximum">
+               <number>100</number>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="checkBox_currnet_heat">
+              <property name="text">
+               <string>Нагрев подложки</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="2">
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
            <widget class="QGroupBox" name="groupBox_meas_rasp">
             <property name="focusPolicy">
              <enum>Qt::WheelFocus</enum>
@@ -304,6 +304,9 @@
              <bool>false</bool>
             </property>
             <layout class="QFormLayout" name="formLayout_3_blockRasp">
+             <property name="labelAlignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
              <property name="topMargin">
               <number>3</number>
              </property>
@@ -381,6 +384,72 @@
           <property name="spacing">
            <number>3</number>
           </property>
+          <item>
+           <layout class="QGridLayout" name="gridLayout_2_blockUpr" columnstretch="0,0">
+            <property name="leftMargin">
+             <number>9</number>
+            </property>
+            <property name="topMargin">
+             <number>3</number>
+            </property>
+            <property name="rightMargin">
+             <number>9</number>
+            </property>
+            <property name="bottomMargin">
+             <number>3</number>
+            </property>
+            <property name="horizontalSpacing">
+             <number>9</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>6</number>
+            </property>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="pushButton_VE3">
+              <property name="text">
+               <string>Клапан VE3</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QPushButton" name="pushButton_VE1">
+              <property name="text">
+               <string>Клапан VE1</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="pushButton_VE2">
+              <property name="text">
+               <string>Клапан VE2</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="pushButton_PG">
+              <property name="text">
+               <string>Датчик PG</string>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/icons/icons/icons8-voltmeter-100.png</normaloff>:/icons/icons/icons8-voltmeter-100.png</iconset>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
           <item>
            <layout class="QGridLayout" name="gridLayout_1_blockUpr">
             <property name="leftMargin">
@@ -478,98 +547,81 @@
            </layout>
           </item>
           <item>
-           <layout class="QGridLayout" name="gridLayout_2_blockUpr" columnstretch="0,0">
-            <property name="leftMargin">
-             <number>9</number>
-            </property>
-            <property name="topMargin">
-             <number>3</number>
-            </property>
-            <property name="rightMargin">
-             <number>9</number>
-            </property>
-            <property name="bottomMargin">
-             <number>3</number>
-            </property>
-            <property name="horizontalSpacing">
-             <number>9</number>
-            </property>
-            <property name="verticalSpacing">
-             <number>6</number>
-            </property>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="pushButton_VE3">
-              <property name="text">
-               <string>Клапан VE3</string>
-              </property>
-              <property name="checkable">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QPushButton" name="pushButton_VE1">
-              <property name="text">
-               <string>Клапан VE1</string>
-              </property>
-              <property name="checkable">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QPushButton" name="pushButton_VE2">
-              <property name="text">
-               <string>Клапан VE2</string>
-              </property>
-              <property name="checkable">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QPushButton" name="pushButton_PG">
-              <property name="text">
-               <string>Датчик PG</string>
-              </property>
-              <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/icons/icons/icons8-voltmeter-100.png</normaloff>:/icons/icons/icons8-voltmeter-100.png</iconset>
-              </property>
-              <property name="checkable">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
            <widget class="QGroupBox" name="groupBox_meas_upr">
             <property name="title">
              <string>Измерения</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
             <property name="flat">
              <bool>true</bool>
             </property>
             <layout class="QGridLayout" name="gridLayout_4">
-             <item row="0" column="3">
-              <widget class="QLabel" name="label_isZQ1_U">
-               <property name="text">
-                <string>TextLabel</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="3">
+             <item row="1" column="4">
               <widget class="QLabel" name="label_isZQ2_U">
                <property name="text">
                 <string>TextLabel</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="2">
+             <item row="0" column="1">
+              <widget class="QLabel" name="label_isP1_U">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QLabel" name="label_ZQ2_U">
+               <property name="text">
+                <string>U, ZQ2</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
               <widget class="QLabel" name="label_ZQ1_U">
                <property name="text">
                 <string>U, ZQ1</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_PG_I">
+               <property name="text">
+                <string>Iэ, PG</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <spacer name="horizontalSpacer_10">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>50</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="label_isPG_I">
+               <property name="text">
+                <string>TextLabel</string>
                </property>
               </widget>
              </item>
@@ -581,19 +633,8 @@
                <property name="text">
                 <string>U, P1</string>
                </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="label_isP1_U">
-               <property name="text">
-                <string>TextLabel</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2">
-              <widget class="QLabel" name="label_ZQ2_U">
-               <property name="text">
-                <string>U, ZQ2</string>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
               </widget>
              </item>
@@ -601,6 +642,16 @@
               <widget class="QLabel" name="label_P2_U">
                <property name="text">
                 <string>U, P2</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="4">
+              <widget class="QLabel" name="label_isZQ1_U">
+               <property name="text">
+                <string>TextLabel</string>
                </property>
               </widget>
              </item>
@@ -611,19 +662,21 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_PG_I">
-               <property name="text">
-                <string>I эмисси, PG</string>
+             <item row="0" column="5">
+              <spacer name="horizontalSpacer_11">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
                </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLabel" name="label_isPG_I">
-               <property name="text">
-                <string>TextLabel</string>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
                </property>
-              </widget>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>50</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
@@ -809,6 +862,9 @@
              <bool>true</bool>
             </property>
             <layout class="QFormLayout" name="formLayout">
+             <property name="labelAlignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
              <item row="0" column="0">
               <widget class="QLabel" name="label_I_DcMagnetron">
                <property name="text">
@@ -839,6 +895,19 @@
              </item>
             </layout>
            </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -892,7 +961,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_sputteringRf">
+             <widget class="QPushButton" name="pushButton_sputteringRFcheck">
               <property name="text">
                <string>Напыление</string>
               </property>
@@ -902,7 +971,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton_sputteringDc">
+             <widget class="QPushButton" name="pushButton_sputteringRF">
               <property name="text">
                <string>Установить</string>
               </property>
@@ -1110,19 +1179,6 @@
            </layout>
           </item>
           <item>
-           <spacer name="verticalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
            <widget class="QGroupBox" name="groupBox_meas_blockRf">
             <property name="title">
              <string>Измерения</string>
@@ -1131,17 +1187,30 @@
              <bool>true</bool>
             </property>
             <layout class="QGridLayout" name="gridLayout_5">
-             <item row="2" column="2">
-              <widget class="QLabel" name="label_KBV">
+             <item row="3" column="3">
+              <widget class="QLabel" name="label_URfMagnetron">
                <property name="text">
-                <string>КБВ</string>
+                <string>U, магнетрона</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
               </widget>
              </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_I_RfAnode">
+             <item row="3" column="4">
+              <widget class="QLabel" name="label_isU_RfMagnetron">
                <property name="text">
-                <string>I, анода</string>
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="3">
+              <widget class="QLabel" name="label_I_RfMagnetron">
+               <property name="text">
+                <string>I, магнетрона</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
               </widget>
              </item>
@@ -1150,12 +1219,52 @@
                <property name="text">
                 <string>Мощность</string>
                </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLabel" name="label_isI_RfAnode">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="4">
+              <widget class="QLabel" name="label_IsI_RfMagnetron">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="3">
+              <widget class="QLabel" name="label_KBV">
+               <property name="text">
+                <string>КБВ</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
               </widget>
              </item>
              <item row="4" column="0">
               <widget class="QLabel" name="label_I_RfDriver">
                <property name="text">
                 <string>I, драйвера</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_I_RfAnode">
+               <property name="text">
+                <string>I, анода</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
               </widget>
              </item>
@@ -1166,29 +1275,8 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="2">
-              <widget class="QLabel" name="label_I_RfMagnetron">
-               <property name="text">
-                <string>I, магнетрона</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="2">
-              <widget class="QLabel" name="label_URfMagnetron">
-               <property name="text">
-                <string>U, магнетрона</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="3">
+             <item row="2" column="4">
               <widget class="QLabel" name="label_isKBV">
-               <property name="text">
-                <string>TextLabel</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLabel" name="label_isI_RfAnode">
                <property name="text">
                 <string>TextLabel</string>
                </property>
@@ -1201,22 +1289,37 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="3">
-              <widget class="QLabel" name="label_isU_RfMagnetron">
-               <property name="text">
-                <string>TextLabel</string>
+             <item row="3" column="2">
+              <spacer name="horizontalSpacer_12">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
                </property>
-              </widget>
-             </item>
-             <item row="4" column="3">
-              <widget class="QLabel" name="label_IsI_RfMagnetron">
-               <property name="text">
-                <string>TextLabel</string>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
                </property>
-              </widget>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>10</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>

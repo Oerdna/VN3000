@@ -7,6 +7,7 @@ from pprint import pprint
 from blockUpr import BlockUPR
 from blockRasp import BlockRasp
 from blockDC import BlockDC
+from blockRF import BlockRF
 from Parser import Parser
 
 
@@ -40,8 +41,12 @@ class VN3000:
         self.blk_upr = BlockUPR(self.bus)
         self.blk_rasp = BlockRasp(self.bus)
         self.blk_dc = BlockDC(self.bus)
+        self.blk_rf = BlockRF(self.bus)
         self.parser = Parser(
-            blockUpr=self.blk_upr, blockRasp=self.blk_rasp, blockDc=self.blk_dc,
+            blockUpr=self.blk_upr,
+            blockRasp=self.blk_rasp,
+            blockDc=self.blk_dc,
+            blockRf=self.blk_rf,
         )
 
     def star_work(self):
@@ -54,6 +59,8 @@ class VN3000:
         self.blk_rasp.get_measurements()
         self.blk_dc.get_states()
         self.blk_dc.get_measurements()
+        self.blk_rf.get_states()
+        self.blk_rf.get_measurements()
 
         self.reader_m4()
         time.sleep(1)
@@ -61,18 +68,23 @@ class VN3000:
         upr = self.blk_upr.return_states_mes()
         ras = self.blk_rasp.return_states_mes()
         dc = self.blk_dc.return_states_mes()
+        rf = self.blk_rf.return_states_mes()
         print("Status block Upr:")
         pprint(upr)
         print("Status block Rasp:")
         pprint(ras)
         print("Status block DC")
         pprint(dc)
+        print("Status block RF")
+        pprint(rf)
 
     def get_measurements(self):
         self.blk_upr.get_measurements()
         self.blk_rasp.get_measurements()
         if self.blk_dc.block_dc_enable:
             self.blk_dc.get_measurements()
+        if self.blk_rf.block_rf_enable:
+            self.blk_rf.get_measurements()
 
     def end_work(self):
         """Close CAN-USB bus and clear other stuff"""
@@ -405,6 +417,132 @@ class VN3000:
         """
         self.blk_dc.current_dc(False)
 
+    def enable_rf_block(self):
+        """Enable rf block
+            | Cheking: block state, chamber, VE1, water
+        """
+        if (
+            self.blk_rf.block_rf_state == True
+            and self.blk_rasp.state_chmb_open == False
+            and self.blk_upr.state_VE1 == False
+            and self.blk_upr.water_2 == True
+            and self.blk_rf.block_rf_enable == False
+        ):
+            self.blk_rf.state_block_rf(True)
+        elif self.blk_upr.state_VE1 == True:
+            return -8
+        elif self.blk_upr.water_2 == False:
+            return -14
+        elif self.blk_rasp.state_chmb_open == True:
+            return -9
+        elif self.blk_rf.block_rf_state == False:
+            return -17
+
+    def disable_rf_block(self):
+        """Disable rf block
+        """
+        if self.blk_rf.block_rf_enable == True:
+            self.disable_rf_sputtering()
+            self.blk_rf.state_block_rf(False)
+
+    def cheking_rf_sputtering(self):
+        """Cheking rf magnetron by pre- sputtering process
+        """
+        if (
+            self.blk_rf.block_rf_enable == True
+            and self.blk_rf.block_rf_ready == True
+            and self.blk_rf.block_rf_sputtering == False
+            and self.blk_rasp.state_chmb_open == False
+            and self.blk_upr.state_VE1 == False
+            and self.blk_upr.water_2 == True
+        ):
+            self.blk_rf.check_rf(True)
+        elif self.blk_rasp.state_chmb_open == True:
+            return -9
+        elif self.blk_upr.state_VE1 == True:
+            return -8
+        elif self.blk_upr.water_2 == False:
+            return -14
+        elif self.blk_rf.block_rf_enable == False:
+            return -18
+        elif self.blk_rf.block_rf_ready == False:
+            return -19
+
+    def disable_cheking_rf_sputtering(self):
+        """Disable pre- sputtering
+        """
+        if self.blk_rf.block_rf_sputtering:
+            self.blk_rf.check_rf(False)
+
+    def enable_rf_sputtering(self, value):
+        """Enable sputtering:
+            | Cheking: block enable, water, VE1, chamber
+        """
+        if (
+            self.blk_rf.block_rf_enable == True
+            and self.blk_rf.block_rf_ready == True
+            and self.blk_rasp.state_chmb_open == False
+            and self.blk_upr.state_VE1 == False
+            and self.blk_upr.water_2 == True
+        ):
+            self.blk_rf.power_rf(True, value)
+        elif self.blk_rasp.state_chmb_open == True:
+            return -9
+        elif self.blk_upr.state_VE1 == True:
+            return -8
+        elif self.blk_upr.water_2 == False:
+            return -14
+        elif self.blk_rf.block_rf_enable == False:
+            return -18
+        elif self.blk_rf.block_rf_ready == False:
+            return -19
+
+    def change_rf_sputtering(self, value):
+        """Change current for dc block
+        """
+        if 0 <= value <= 500:
+            self.blk_rf.range_power = value
+
+    def get_rf_sputtering(self):
+        return self.blk_rf.range_power
+
+    def disable_rf_sputtering(self):
+        """Disable sputtering
+        """
+        self.blk_rf.power_rf(False)
+
+    """
+    Enable/disable capacity С1/2 increase/reduction
+    """
+
+    def Cap1upStart(self):
+        self.blk_rf.cap_state("C1", "up", True)
+
+    def Cap2upStart(self):
+        self.blk_rf.cap_state("C2", "up", True)
+
+    def Cap1upStop(self):
+        self.blk_rf.cap_state("C1", "up", False)
+
+    def Cap2upStop(self):
+        self.blk_rf.cap_state("C2", "up", False)
+
+    def Cap1downStart(self):
+        self.blk_rf.cap_state("C1", "down", True)
+
+    def Cap2downStart(self):
+        self.blk_rf.cap_state("C2", "down", True)
+
+    def Cap1downStop(self):
+        self.blk_rf.cap_state("C1", "down", False)
+
+    def Cap2downStop(self):
+        self.blk_rf.cap_state("C2", "down", False)
+
+    """
+    Reading methodes
+    """
+
     def reader_m2(self):
         """Method 2 for read recv msg from bus
         """
@@ -426,7 +564,8 @@ class VN3000:
         rasp = self.blk_rasp.return_mes()
         upr = self.blk_upr.return_mes()
         dc = self.blk_dc.return_mes()
-        return {**rasp, **upr, **dc}
+        rf = self.blk_rf.return_mes()
+        return {**rasp, **upr, **dc, **rf}
 
     def get_values_for_states(self):
         """
@@ -435,4 +574,5 @@ class VN3000:
         rasp = self.blk_rasp.return_states()
         upr = self.blk_upr.return_states()
         dc = self.blk_dc.return_states()
-        return {**rasp, **upr, **dc}
+        rf = self.blk_rf.return_states()
+        return {**rasp, **upr, **dc, **rf}

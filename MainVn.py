@@ -105,7 +105,9 @@ class MainWindow(QMainWindow):
         self.CodeDict[-14] = "Нет охлаждения магнетрона!"
         self.CodeDict[-15] = "Блок DC магнетрона не включён!"
         self.CodeDict[-16] = "Нет связи с блоком DC магнетрона!"
-
+        self.CodeDict[-17] = "Нет связи с блоком RF магнетрона!"
+        self.CodeDict[-18] = "Блок RF магнетрона не включён!"
+        self.CodeDict[-19] = "Блок RF магнетрона еще не готов к работе!"
         """
         Text aboout
         """
@@ -186,6 +188,23 @@ class MainWindow(QMainWindow):
         self.pushButton_enableDcBlock.clicked.connect(self.ButtonDCHandler)
         self.pushButton_CurrentDcMagnetron.clicked.connect(self.ButtonSputteringHandler)
         self.spinBox_CurrentDcMagnetron.valueChanged.connect(self.changeDCcurrent)
+
+        """
+        Method to control RF block
+        """
+        self.pushButton_enableRfBlock.clicked.connect(self.ButtonRFHandler)
+        self.pushButton_sputteringRFcheck.clicked.connect(self.ButtonRFcheckHandler)
+        self.pushButton_sputteringRF.clicked.connect(self.ButtonRFsputteringHandler)
+        self.spinBox_powerRfMagnetron.valueChanged.connect(self.changeRFcurrent)
+        self.pushButton_upC1.pressed.connect(self.ButtonCap1upPressed)
+        self.pushButton_upC2.pressed.connect(self.ButtonCap2upPressed)
+        self.pushButton_downC1.pressed.connect(self.ButtonCap1downPressed)
+        self.pushButton_downC2.pressed.connect(self.ButtonCap2downPressed)
+        self.pushButton_upC1.released.connect(self.ButtonCap1upReleased)
+        self.pushButton_upC2.released.connect(self.ButtonCap2upReleased)
+        self.pushButton_downC1.released.connect(self.ButtonCap1downReleased)
+        self.pushButton_downC2.released.connect(self.ButtonCap2downReleased)
+
         """
         Add and rule scene - scheme
         """
@@ -213,37 +232,90 @@ class MainWindow(QMainWindow):
         self.timer.start()
 
     """
+    Control Rf block
+    """
+
+    def ButtonRFHandler(self):
+        if self.pushButton_enableRfBlock.isChecked():
+            self.DialogMsg(self.vn3000.enable_rf_block(), self.pushButton_enableRfBlock)
+        else:
+            self.DialogMsg(
+                self.vn3000.disable_rf_block(), self.pushButton_enableRfBlock
+            )
+
+    def ButtonRFcheckHandler(self):
+        if self.pushButton_sputteringRFcheck.isChecked():
+            self.DialogMsg(
+                self.vn3000.cheking_rf_sputtering(), self.pushButton_sputteringRFcheck
+            )
+        else:
+            self.DialogMsg(
+                self.vn3000.disable_cheking_rf_sputtering(),
+                self.pushButton_sputteringRFcheck,
+            )
+
+    def ButtonRFsputteringHandler(self):
+        if self.pushButton_sputteringRF.isChecked():
+            self.DialogMsg(
+                self.vn3000.enable_rf_sputtering(self.vn3000.get_rf_sputtering()),
+                self.pushButton_sputteringRF,
+            )
+        else:
+            self.DialogMsg(
+                self.vn3000.disable_rf_sputtering(), self.pushButton_sputteringRF
+            )
+
+    def changeRFcurrent(self):
+        self.vn3000.change_rf_sputtering(self.spinBox_powerRfMagnetron.value())
+        if self.pushButton_sputteringRF.isChecked() == True:
+            self.vn3000.enable_rf_sputtering(self.vn3000.get_rf_sputtering())
+
+    def ButtonCap1upPressed(self):
+        self.vn3000.Cap1upStart()
+
+    def ButtonCap2upPressed(self):
+        self.vn3000.Cap2upStart()
+
+    def ButtonCap1downPressed(self):
+        self.vn3000.Cap1downStart()
+
+    def ButtonCap2downPressed(self):
+        self.vn3000.Cap2downStart()
+
+    def ButtonCap1upReleased(self):
+        self.vn3000.Cap1upStop()
+
+    def ButtonCap2upReleased(self):
+        self.vn3000.Cap2upStop()
+
+    def ButtonCap1downReleased(self):
+        self.vn3000.Cap1downStop()
+
+    def ButtonCap2downReleased(self):
+        self.vn3000.Cap2downStop()
+
+    """
     Control Dc block
     """
 
     def ButtonDCHandler(self):
         if self.pushButton_enableDcBlock.isChecked():
-            self.EnableDC()
+            self.DialogMsg(self.vn3000.enable_dc_block(), self.pushButton_enableDcBlock)
         else:
-            self.DisableDC()
-
-    def EnableDC(self):
-        self.DialogMsg(self.vn3000.enable_dc_block(), self.pushButton_enableDcBlock)
-
-    def DisableDC(self):
-        self.DialogMsg(self.vn3000.disable_dc_block(), self.pushButton_enableDcBlock)
+            self.DialogMsg(
+                self.vn3000.disable_dc_block(), self.pushButton_enableDcBlock
+            )
 
     def ButtonSputteringHandler(self):
         if self.pushButton_CurrentDcMagnetron.isChecked():
-            self.EnableSputtering()
+            self.DialogMsg(
+                self.vn3000.enable_dc_sputtering(self.vn3000.get_dc_sputtering()),
+                self.pushButton_CurrentDcMagnetron,
+            )
         else:
-            self.DisableSputtering()
-
-    def EnableSputtering(self):
-        self.DialogMsg(
-            self.vn3000.enable_dc_sputtering(self.vn3000.get_dc_sputtering()),
-            self.pushButton_CurrentDcMagnetron,
-        )
-
-    def DisableSputtering(self):
-        self.DialogMsg(
-            self.vn3000.disable_dc_sputtering(), self.pushButton_CurrentDcMagnetron
-        )
+            self.DialogMsg(
+                self.vn3000.disable_dc_sputtering(), self.pushButton_CurrentDcMagnetron
+            )
 
     def changeDCcurrent(self):
         self.vn3000.change_dc_sputtering(self.spinBox_CurrentDcMagnetron.value())
@@ -332,15 +404,9 @@ class MainWindow(QMainWindow):
 
     def ButtonVE3Handler(self):
         if self.pushButton_VE3.isChecked():
-            self.EnableVE3()
+            self.DialogMsg(self.vn3000.open_VE3(), self.pushButton_VE3)
         else:
-            self.DisableVE3()
-
-    def EnableVE3(self):
-        self.DialogMsg(self.vn3000.open_VE3(), self.pushButton_VE3)
-
-    def DisableVE3(self):
-        self.DialogMsg(self.vn3000.close_VE3(), self.pushButton_VE3)
+            self.DialogMsg(self.vn3000.close_VE3(), self.pushButton_VE3)
 
     """
     VE2 - Handler: aneble and disable. Checking conditions for reduce crash of installation
@@ -348,15 +414,9 @@ class MainWindow(QMainWindow):
 
     def ButtonVE2Handler(self):
         if self.pushButton_VE2.isChecked():
-            self.EnableVE2()
+            self.DialogMsg(self.vn3000.open_VE2(), self.pushButton_VE2)
         else:
-            self.DisableVE2()
-
-    def EnableVE2(self):
-        self.DialogMsg(self.vn3000.open_VE2(), self.pushButton_VE2)
-
-    def DisableVE2(self):
-        self.DialogMsg(self.vn3000.close_VE2(), self.pushButton_VE2)
+            self.DialogMsg(self.vn3000.close_VE2(), self.pushButton_VE2)
 
     """
     VE1 - Handler: aneble and disable. Checking conditions for reduce crash of installation
@@ -364,15 +424,9 @@ class MainWindow(QMainWindow):
 
     def ButtonVE1Handler(self):
         if self.pushButton_VE1.isChecked():
-            self.EnableVE1()
+            self.DialogMsg(self.vn3000.open_VE1(), self.pushButton_VE1)
         else:
-            self.DisableVE1()
-
-    def EnableVE1(self):
-        self.DialogMsg(self.vn3000.open_VE1(), self.pushButton_VE1)
-
-    def DisableVE1(self):
-        self.DialogMsg(self.vn3000.close_VE1(), self.pushButton_VE1)
+            self.DialogMsg(self.vn3000.close_VE1(), self.pushButton_VE1)
 
     """
     NT - Handler: aneble and disable. Checking conditions for reduce crash of installation
@@ -380,15 +434,9 @@ class MainWindow(QMainWindow):
 
     def ButtonNTHandler(self):
         if self.pushButton_NT.isChecked():
-            self.EnableNT()
+            self.DialogMsg(self.vn3000.enable_NT(), self.pushButton_NT)
         else:
-            self.DisableNT()
-
-    def EnableNT(self):
-        self.DialogMsg(self.vn3000.enable_NT(), self.pushButton_NT)
-
-    def DisableNT(self):
-        self.DialogMsg(self.vn3000.disable_NT(), self.pushButton_NT)
+            self.DialogMsg(self.vn3000.disable_NT(), self.pushButton_NT)
 
     """
     NF - Handler: aneble and disable. Checking conditions for reduce crash of installation
@@ -396,15 +444,9 @@ class MainWindow(QMainWindow):
 
     def ButtonNFHandler(self):
         if self.pushButton_NF.isChecked():
-            self.EnableNF()
+            self.DialogMsg(self.vn3000.enable_NF(), self.pushButton_NF)
         else:
-            self.DisableNF()
-
-    def EnableNF(self):
-        self.DialogMsg(self.vn3000.enable_NF(), self.pushButton_NF)
-
-    def DisableNF(self):
-        self.DialogMsg(self.vn3000.disable_NF(), self.pushButton_NF)
+            self.DialogMsg(self.vn3000.disable_NF(), self.pushButton_NF)
 
     """
     PG - Handler: anable and disable. Checking conditions for reduce crash of installation
@@ -431,12 +473,20 @@ class MainWindow(QMainWindow):
         self.label_pressure_PG.setVisible(False)
         self.label_PG.setVisible(False)
 
+    """
+    Cheking return Error
+    """
+
     def DialogMsg(self, ErrorCode: int, Button: object = None):
         print("Error Code: ", ErrorCode)
         if ErrorCode != None:
             msg = QMessageBox.warning(self, "Message Warning", self.CodeDict[ErrorCode])
             if Button != None:
                 Button.toggle()
+
+    """
+    Cheking close Window
+    """
 
     def closeEvent(self, event):
         close = QMessageBox.question(
@@ -477,6 +527,14 @@ class MainWindow(QMainWindow):
         self.label_isspeed.setText("{mes_speed}, об/мин".format(**kwargsMeas))
         self.label_isI_DcMagnetron.setText("{mes_current_dc}, мА".format(**kwargsMeas))
         self.label_isU_DcMagnetron.setText("{mes_voltage_dc}, В".format(**kwargsMeas))
+        self.label_isPowerRf.setText("{mes_rf_Power:.2f}, Вт").format(**kwargsMeas)
+        self.label_isKBV.setText("{mes_rf_KBV:.3f}").format(**kwargsMeas)
+        self.label_isI_RfAnode.setText("{mes_rf_Ianod:.2f}, мА").format(**kwargsMeas)
+        self.label_IsI_RfDriver.setText("{mes_rf_Idriver:.2f}, мА").format(**kwargsMeas)
+        self.label_isU_RfMagnetron.setText("{mes_rf_Umagn:.2f}, В").format(**kwargsMeas)
+        self.label_IsI_RfMagnetron.setText("{mes_rf_Imagn:.2f}, мА").format(
+            **kwargsMeas
+        )
         """
         Check waters
         """
@@ -587,6 +645,11 @@ class MainWindow(QMainWindow):
         self.spinBox_CurrentDcMagnetron.setValue(kwargsStats["range_current"])
         self.pushButton_enableDcBlock.setChecked(kwargsStats["block_dc_enable"])
         self.pushButton_CurrentDcMagnetron.setChecked(kwargsStats["current_state"])
+        self.spinBox_powerRfMagnetron.setValue(kwargsStats["range_power"])
+        self.pushButton_enableRfBlock.setChecked(kwargsStats["block_rf_enable"])
+        self.pushButton_sputteringRFcheck.setChecked(kwargsStats["block_rf_sputtering"])
+        self.pushButton_sputteringRF.setChecked(kwargsStats["block_rf_set_power"])
+
         """PG Logic
         """
         if kwargsStats["state_PG"] == True:

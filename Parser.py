@@ -13,6 +13,8 @@ class Parser:
         "id_blockRasp_events": 0x101E0065,
         "id_blockDc_measurements": 0x101E0001,
         "id_blockDC_events": 0x101E0005,
+        "id_blockRf_measurements": 0x101E0020,
+        "id_blockRf_events": 0x101E0025,
     }
 
     data_mes_upr = {
@@ -36,10 +38,23 @@ class Parser:
         "state_block": 0x0A,
     }
 
-    def __init__(self, blockUpr: object, blockRasp: object, blockDc: object):
+    data_mes_rf = {
+        "Current_driver": 0x01,
+        "Current_anod": 0x02,
+        "KBV": 0x03,
+        "Power": 0x04,
+        "Voltage_magnetron": 0x05,
+        "Current_magnetron": 0x06,
+        "state_block": 0x0A,
+    }
+
+    def __init__(
+        self, blockUpr: object, blockRasp: object, blockDc: object, blockRf: object
+    ):
         self.blockUpr = blockUpr
         self.blockRasp = blockRasp
         self.blockDc = blockDc
+        self.blockRf = blockRf
 
     def read_input(self, msg):
         if msg.arbitration_id == self.dict_id["id_blockUPR_measurements"]:
@@ -54,6 +69,10 @@ class Parser:
             self.blockDc_measurements(msg)
         elif msg.arbitration_id == self.dict_id["id_blockDC_events"]:
             self.blockDc_events(msg)
+        elif msg.arbitration_id == self.dict_id["id_blockRf_measurements"]:
+            self.blockRf_measurements(msg)
+        elif msg.arbitration_id == self.dict_id["id_blockRf_events"]:
+            self.blockRf_events(msg)
 
     def blockUPR_measurements(self, msg):
         """Measurement processing by data[0]
@@ -224,3 +243,46 @@ class Parser:
             elif msg.data[2] & 15 == 9:
                 self.blockDc.current_state = False
 
+    def blockRf_measurements(self, msg):
+        if msg.data[0] == self.data_mes_rf["Current_driver"]:
+            self.blockRf.mes_rf_Idriver = struct.unpack("<f", msg.data[4:8])[0]
+        elif msg.data[0] == self.data_mes_rf["Current_anod"]:
+            self.blockRf.mes_rf_Ianod = struct.unpack("<f", msg.data[4:8])[0]
+        elif msg.data[0] == self.data_mes_rf["KBV"]:
+            self.blockRf.mes_rf_KBV = struct.unpack("<f", msg.data[4:8])[0]
+        elif msg.data[0] == self.data_mes_rf["Power"]:
+            self.blockRf.mes_rf_Power = struct.unpack("<f", msg.data[4:8])[0]
+        elif msg.data[0] == self.data_mes_rf["Voltage_magnetron"]:
+            self.blockRf.mes_rf_Umagn = struct.unpack("<f", msg.data[4:8])[0]
+        elif msg.data[0] == self.data_mes_rf["Current_magnetron"]:
+            self.blockRf.mes_rf_Imagn = struct.unpack("<f", msg.data[4:8])[0]
+        elif msg.data[0] == self.data_mes_rf["state_block"]:
+            self.blockRf.block_rf_state = True
+            self.blockRf.block_rf_enable = True if msg.data[3] & 1 else False
+            self.blockRf.block_rf_sputtering = True if msg.data[3] & 4 else False
+            self.blockRf.block_rf_set_power = True if msg.data[3] & 8 else False
+            self.blockRf.range_power = struct.unpack("<H", msg.data[4:6])[0]
+
+    def blockRf_events(self, msg):
+        if msg.data[2] & 240 == 16:
+            if msg.data[2] & 15 == 1:
+                self.blockRf.block_rf_enable = True
+            elif msg.data[2] & 15 == 4:
+                self.blockRf.block_rf_enable = True
+            elif msg.data[2] & 15 == 5:
+                self.blockRf.block_rf_ready = False
+        elif msg.data[2] & 240 == 32:
+            if msg.data[2] & 15 == 8:
+                self.blockRf.block_rf_ready = True
+        elif msg.data[2] & 240 == 48:
+            if msg.data[2] & 15 == 0:
+                self.blockRf.block_rf_sputtering = True
+            elif msg.data[2] & 15 == 1:
+                self.blockRf.block_rf_sputtering = False
+            elif msg.data[2] & 15 == 8:
+                self.blockRf.block_rf_set_power = True
+            elif msg.data[2] & 15 == 9:
+                self.blockRf.block_rf_set_power = False
+        elif msg.data[2] & 240 == 64:
+            if msg.data[2] & 15 == 0:
+                self.blockRf.error == True
