@@ -1,11 +1,12 @@
 import sys
 import math
+import os
 from PyQt5 import uic
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsScene, QMainWindow, QMessageBox
-import resources
 from PyQt5.QtSvg import QGraphicsSvgItem, QSvgRenderer
 from PyQt5.QtCore import QSize
+import resources
 from VN3000 import VN3000
 
 
@@ -15,7 +16,7 @@ class Scene(QGraphicsScene):
         """
         Set background SVG
         """
-        self.setSceneRect(0, 0, 360, 360)
+        self.setSceneRect(0, 0, 447, 360)
         self.SvgBack = QGraphicsSvgItem("./images/scene.svg")
         self.addItem(self.SvgBack)
 
@@ -63,7 +64,7 @@ class Scene(QGraphicsScene):
         }
         self.SvgItems["Waring_VE4"] = {
             "pos": {"x": 153.153, "y": 185.572},
-            "state": {"ON": "g282"},
+            "state": {"ON": "g263"},
         }
 
         """
@@ -108,6 +109,7 @@ class MainWindow(QMainWindow):
         self.CodeDict[-17] = "Нет связи с блоком RF магнетрона!"
         self.CodeDict[-18] = "Блок RF магнетрона не включён!"
         self.CodeDict[-19] = "Блок RF магнетрона еще не готов к работе!"
+        self.CodeDict[-20] = "Блок RF магнетрона: перегрузка по току!"
         """
         Text aboout
         """
@@ -527,13 +529,13 @@ class MainWindow(QMainWindow):
         self.label_isspeed.setText("{mes_speed}, об/мин".format(**kwargsMeas))
         self.label_isI_DcMagnetron.setText("{mes_current_dc}, мА".format(**kwargsMeas))
         self.label_isU_DcMagnetron.setText("{mes_voltage_dc}, В".format(**kwargsMeas))
-        self.label_isPowerRf.setText("{mes_rf_Power:.2f}, Вт").format(**kwargsMeas)
-        self.label_isKBV.setText("{mes_rf_KBV:.3f}").format(**kwargsMeas)
-        self.label_isI_RfAnode.setText("{mes_rf_Ianod:.2f}, мА").format(**kwargsMeas)
-        self.label_IsI_RfDriver.setText("{mes_rf_Idriver:.2f}, мА").format(**kwargsMeas)
-        self.label_isU_RfMagnetron.setText("{mes_rf_Umagn:.2f}, В").format(**kwargsMeas)
-        self.label_IsI_RfMagnetron.setText("{mes_rf_Imagn:.2f}, мА").format(
-            **kwargsMeas
+        self.label_isPowerRf.setText("{mes_rf_Power:.2f}, Вт".format(**kwargsMeas))
+        self.label_isKBV.setText("{mes_rf_KBV:.3f}".format(**kwargsMeas))
+        self.label_isI_RfAnode.setText("{mes_rf_Ianod:.2f}, мА".format(**kwargsMeas))
+        self.label_IsI_RfDriver.setText("{mes_rf_Idriver:.2f}, мА".format(**kwargsMeas))
+        self.label_isU_RfMagnetron.setText("{mes_rf_Umagn:.2f}, В".format(**kwargsMeas))
+        self.label_IsI_RfMagnetron.setText(
+            "{mes_rf_Imagn:.2f}, мА".format(**kwargsMeas)
         )
         """
         Check waters
@@ -600,6 +602,18 @@ class MainWindow(QMainWindow):
             self.scene.SvgObjs["NT"]["WAIT"].setVisible(False)
         else:
             self.scene.SvgObjs["NT"]["WAIT"].setVisible(kwargsMeas["state_NT"])
+        """Check RF block Error
+        """
+        if kwargsMeas["block_rf_error"]:
+            self.DialogMsg(-20)
+            # toogle pre sputtering button
+            if self.pushButton_sputteringRFcheck.isChecked() == True():
+                self.pushButton_sputteringRFcheck.toogle()
+            # toogle set power
+            if self.pushButton_sputteringRF.isChecked() == True():
+                self.pushButton_sputteringRF.toogle()
+            # toogle trought VN3000 for reset error
+            self.vn3000.reset_rf_error()
         """VE4 Logic
         """
         if kwargsMeas["state_VE4_close"]:
@@ -690,6 +704,8 @@ class MainWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
+    if os.name != "nt":
+        app.setStyle("Fusion")
     MainWindow = MainWindow()
     MainWindow.show()
     sys.exit(app.exec_())

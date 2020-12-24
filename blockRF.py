@@ -159,7 +159,7 @@ class BlockRF:
     def return_states_mes(self):
         return {
             "range_power": self.range_power,
-            "error": self.error,
+            "block_rf_error": self.error,
             "block_rf_ready": self.block_rf_ready,
             "block_rf_state": self.block_rf_state,
             "block_rf_enable": self.block_rf_enable,
@@ -185,7 +185,7 @@ class BlockRF:
             "block_rf_enable": self.block_rf_enable,
             "block_rf_sputtering": self.block_rf_sputtering,
             "block_rf_set_power": self.block_rf_set_power,
-            "error": self.error,
+            "block_rf_error": self.error,
             "block_rf_ready": self.block_rf_ready,
         }
 

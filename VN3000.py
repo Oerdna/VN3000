@@ -1,5 +1,5 @@
 import can
-import asyncio
+import os
 import threading
 import json
 import time
@@ -33,7 +33,16 @@ class VN3000:
         )
 
         try:
-            self.bus = can.ThreadSafeBus(bustype="systec", channel="0", bitrate=1000000)
+            if os.name == "nt":
+                self.bus = can.ThreadSafeBus(
+                    bustype="systec", channel="0", bitrate=1000000
+                )
+            else:
+                os.system(
+                    "echo password|sudo -S ip link set can0 type can bitrate 1000000"
+                )
+                os.system("echo password|sudo -S ip link set up can0")
+                self.bus = can.ThreadSafeBus(channel="can0", bustype="socketcan")
         except can.CanError:
             print("Hardware or CAN interface initialization failed.")
             input()
@@ -78,6 +87,8 @@ class VN3000:
         print("Status block RF")
         pprint(rf)
 
+        # self.periodic_send()
+
     def get_measurements(self):
         self.blk_upr.get_measurements()
         self.blk_rasp.get_measurements()
@@ -86,10 +97,18 @@ class VN3000:
         if self.blk_rf.block_rf_enable:
             self.blk_rf.get_measurements()
 
+    def periodic_send(self):
+        self.get_measurements()
+        self.t = threading.Timer(0.5, self.periodic_send)
+        self.t.start()
+
     def end_work(self):
         """Close CAN-USB bus and clear other stuff"""
         self.noti.stop()
+        # self.t.cancel()
         self.bus.shutdown()
+        if os.name == "posix":
+            os.system("echo password|sudo -S ip link set down can0")
 
     def check_phase(self):
         """Checking electrical phase"""
@@ -510,6 +529,11 @@ class VN3000:
         """Disable sputtering
         """
         self.blk_rf.power_rf(False)
+
+    def reset_rf_error(self):
+        """reset error bool
+        """
+        self.blk_rf.error = False
 
     """
     Enable/disable capacity С1/2 increase/reduction

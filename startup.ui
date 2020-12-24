@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>960</width>
+    <height>620</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,14 +19,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>800</width>
-    <height>600</height>
+    <width>960</width>
+    <height>620</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>800</width>
-    <height>600</height>
+    <width>960</width>
+    <height>620</height>
    </size>
   </property>
   <property name="font">
@@ -76,7 +76,7 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
-       <number>10</number>
+       <number>6</number>
       </property>
       <property name="leftMargin">
        <number>9</number>
@@ -128,31 +128,25 @@
           <string>Блок распределительный</string>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_3">
-          <property name="spacing">
-           <number>2</number>
-          </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_2_blockRasp">
-            <property name="leftMargin">
+            <property name="spacing">
              <number>9</number>
-            </property>
-            <property name="topMargin">
-             <number>3</number>
-            </property>
-            <property name="rightMargin">
-             <number>9</number>
-            </property>
-            <property name="bottomMargin">
-             <number>3</number>
-            </property>
-            <property name="horizontalSpacing">
-             <number>9</number>
-            </property>
-            <property name="verticalSpacing">
-             <number>6</number>
             </property>
             <item row="1" column="0">
              <widget class="QPushButton" name="pushButton_open_VE4">
+              <property name="minimumSize">
+               <size>
+                <width>167</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>167</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
                <string>Открыть VE4</string>
               </property>
@@ -160,6 +154,18 @@
             </item>
             <item row="1" column="1">
              <widget class="QPushButton" name="pushButton_close_VE4">
+              <property name="minimumSize">
+               <size>
+                <width>167</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>167</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
                <string>Закрыть VE4</string>
               </property>
@@ -167,6 +173,18 @@
             </item>
             <item row="0" column="0">
              <widget class="QPushButton" name="pushButton_NT">
+              <property name="minimumSize">
+               <size>
+                <width>167</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>167</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
                <string>NT</string>
               </property>
@@ -187,6 +205,18 @@
             </item>
             <item row="0" column="1">
              <widget class="QPushButton" name="pushButton_NF">
+              <property name="minimumSize">
+               <size>
+                <width>167</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>167</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
                <string>NF</string>
               </property>
@@ -216,45 +246,17 @@
              <number>9</number>
             </property>
             <property name="topMargin">
-             <number>3</number>
+             <number>9</number>
             </property>
             <property name="rightMargin">
              <number>9</number>
             </property>
             <property name="bottomMargin">
-             <number>3</number>
+             <number>9</number>
             </property>
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="0" column="1">
-             <widget class="QSpinBox" name="spinBox_current_heat">
-              <property name="maximum">
-               <number>5500</number>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QCheckBox" name="checkBox_rotation_substrate">
-              <property name="text">
-               <string>Вращение подложки</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QSpinBox" name="spinBox_Speed">
-              <property name="maximum">
-               <number>100</number>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QCheckBox" name="checkBox_currnet_heat">
-              <property name="text">
-               <string>Нагрев подложки</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="2">
              <spacer name="horizontalSpacer_2">
               <property name="orientation">
@@ -268,6 +270,20 @@
               </property>
              </spacer>
             </item>
+            <item row="1" column="0">
+             <widget class="QCheckBox" name="checkBox_rotation_substrate">
+              <property name="text">
+               <string>Вращение подложки</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="checkBox_currnet_heat">
+              <property name="text">
+               <string>Нагрев подложки</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="2">
              <spacer name="horizontalSpacer_3">
               <property name="orientation">
@@ -280,6 +296,38 @@
                </size>
               </property>
              </spacer>
+            </item>
+            <item row="1" column="1">
+             <widget class="QSpinBox" name="spinBox_Speed">
+              <property name="minimumSize">
+               <size>
+                <width>57</width>
+                <height>22</height>
+               </size>
+              </property>
+              <property name="maximum">
+               <number>100</number>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QSpinBox" name="spinBox_current_heat">
+              <property name="minimumSize">
+               <size>
+                <width>57</width>
+                <height>22</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="maximum">
+               <number>5500</number>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -306,12 +354,6 @@
             <layout class="QFormLayout" name="formLayout_3_blockRasp">
              <property name="labelAlignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="topMargin">
-              <number>3</number>
-             </property>
-             <property name="bottomMargin">
-              <number>3</number>
              </property>
              <item row="0" column="0">
               <widget class="QLabel" name="label_temperature">
@@ -382,30 +424,21 @@
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="spacing">
-           <number>3</number>
+           <number>6</number>
           </property>
           <item>
            <layout class="QGridLayout" name="gridLayout_2_blockUpr" columnstretch="0,0">
-            <property name="leftMargin">
+            <property name="spacing">
              <number>9</number>
-            </property>
-            <property name="topMargin">
-             <number>3</number>
-            </property>
-            <property name="rightMargin">
-             <number>9</number>
-            </property>
-            <property name="bottomMargin">
-             <number>3</number>
-            </property>
-            <property name="horizontalSpacing">
-             <number>9</number>
-            </property>
-            <property name="verticalSpacing">
-             <number>6</number>
             </property>
             <item row="1" column="0">
              <widget class="QPushButton" name="pushButton_VE3">
+              <property name="maximumSize">
+               <size>
+                <width>167</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
                <string>Клапан VE3</string>
               </property>
@@ -416,6 +449,12 @@
             </item>
             <item row="0" column="0">
              <widget class="QPushButton" name="pushButton_VE1">
+              <property name="maximumSize">
+               <size>
+                <width>167</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
                <string>Клапан VE1</string>
               </property>
@@ -426,6 +465,12 @@
             </item>
             <item row="0" column="1">
              <widget class="QPushButton" name="pushButton_VE2">
+              <property name="maximumSize">
+               <size>
+                <width>167</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
                <string>Клапан VE2</string>
               </property>
@@ -436,6 +481,12 @@
             </item>
             <item row="1" column="1">
              <widget class="QPushButton" name="pushButton_PG">
+              <property name="maximumSize">
+               <size>
+                <width>167</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
                <string>Датчик PG</string>
               </property>
@@ -456,13 +507,13 @@
              <number>9</number>
             </property>
             <property name="topMargin">
-             <number>3</number>
+             <number>9</number>
             </property>
             <property name="rightMargin">
              <number>9</number>
             </property>
             <property name="bottomMargin">
-             <number>3</number>
+             <number>9</number>
             </property>
             <property name="spacing">
              <number>6</number>
@@ -720,13 +771,13 @@
              <number>9</number>
             </property>
             <property name="topMargin">
-             <number>6</number>
+             <number>9</number>
             </property>
             <property name="rightMargin">
              <number>9</number>
             </property>
             <property name="bottomMargin">
-             <number>6</number>
+             <number>9</number>
             </property>
             <item>
              <widget class="QPushButton" name="pushButton_enableDcBlock">
@@ -735,13 +786,13 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>110</width>
+                <width>130</width>
                 <height>26</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>110</width>
+                <width>130</width>
                 <height>26</height>
                </size>
               </property>
@@ -770,13 +821,13 @@
              <widget class="QPushButton" name="pushButton_CurrentDcMagnetron">
               <property name="minimumSize">
                <size>
-                <width>111</width>
+                <width>130</width>
                 <height>26</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>111</width>
+                <width>130</width>
                 <height>26</height>
                </size>
               </property>
@@ -792,19 +843,6 @@
               </property>
              </widget>
             </item>
-            <item>
-             <spacer name="horizontalSpacer_9">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
            </layout>
           </item>
           <item>
@@ -813,13 +851,13 @@
              <number>9</number>
             </property>
             <property name="topMargin">
-             <number>6</number>
+             <number>9</number>
             </property>
             <property name="rightMargin">
              <number>9</number>
             </property>
             <property name="bottomMargin">
-             <number>6</number>
+             <number>9</number>
             </property>
             <property name="horizontalSpacing">
              <number>6</number>
@@ -839,6 +877,12 @@
             </item>
             <item row="0" column="1">
              <widget class="QSpinBox" name="spinBox_CurrentDcMagnetron">
+              <property name="minimumSize">
+               <size>
+                <width>49</width>
+                <height>22</height>
+               </size>
+              </property>
               <property name="maximum">
                <number>255</number>
               </property>
@@ -938,16 +982,28 @@
              <number>9</number>
             </property>
             <property name="topMargin">
-             <number>6</number>
+             <number>9</number>
             </property>
             <property name="rightMargin">
              <number>9</number>
             </property>
             <property name="bottomMargin">
-             <number>6</number>
+             <number>9</number>
             </property>
             <item>
              <widget class="QPushButton" name="pushButton_enableRfBlock">
+              <property name="minimumSize">
+               <size>
+                <width>130</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>130</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
                <string>Вкл. блок</string>
               </property>
@@ -962,6 +1018,18 @@
             </item>
             <item>
              <widget class="QPushButton" name="pushButton_sputteringRFcheck">
+              <property name="minimumSize">
+               <size>
+                <width>130</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>130</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
                <string>Напыление</string>
               </property>
@@ -972,6 +1040,18 @@
             </item>
             <item>
              <widget class="QPushButton" name="pushButton_sputteringRF">
+              <property name="minimumSize">
+               <size>
+                <width>130</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>130</width>
+                <height>26</height>
+               </size>
+              </property>
               <property name="text">
                <string>Установить</string>
               </property>
@@ -1006,6 +1086,12 @@
             </item>
             <item>
              <widget class="QSpinBox" name="spinBox_powerRfMagnetron">
+              <property name="minimumSize">
+               <size>
+                <width>49</width>
+                <height>22</height>
+               </size>
+              </property>
               <property name="maximum">
                <number>500</number>
               </property>
@@ -1028,6 +1114,12 @@
              <layout class="QGridLayout" name="gridLayout_2">
               <item row="0" column="0">
                <widget class="QPushButton" name="pushButton_upC1">
+                <property name="minimumSize">
+                 <size>
+                  <width>26</width>
+                  <height>26</height>
+                 </size>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>26</width>
@@ -1054,6 +1146,12 @@
               </item>
               <item row="1" column="0">
                <widget class="QPushButton" name="pushButton_downC1">
+                <property name="minimumSize">
+                 <size>
+                  <width>26</width>
+                  <height>26</height>
+                 </size>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>26</width>
@@ -1104,6 +1202,12 @@
              <layout class="QGridLayout" name="gridLayout_3">
               <item row="0" column="0">
                <widget class="QPushButton" name="pushButton_upC2">
+                <property name="minimumSize">
+                 <size>
+                  <width>26</width>
+                  <height>26</height>
+                 </size>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>26</width>
@@ -1130,6 +1234,12 @@
               </item>
               <item row="1" column="0">
                <widget class="QPushButton" name="pushButton_downC2">
+                <property name="minimumSize">
+                 <size>
+                  <width>26</width>
+                  <height>26</height>
+                 </size>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>26</width>
@@ -1357,7 +1467,7 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>360</width>
+          <width>447</width>
           <height>360</height>
          </size>
         </property>
@@ -1366,6 +1476,12 @@
           <width>360</width>
           <height>360</height>
          </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::WheelFocus</enum>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
         </property>
         <property name="frameShape">
          <enum>QFrame::NoFrame</enum>
@@ -1525,6 +1641,18 @@
         </item>
         <item>
          <widget class="QProgressBar" name="progressBar_P1">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>21</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QProgressBar {
 background-color:qlineargradient(spread:pad, x1:0, y1:0.46, x2:1, y2:0.44, stop:0.1 rgba(34, 180, 246, 255), stop:0.55 rgba(239, 203, 99, 255),stop:0.71 rgba(239, 203, 99, 255), stop:1 rgba(255, 14, 0, 255));
@@ -1603,6 +1731,18 @@ border-radius :7px;
         </item>
         <item>
          <widget class="QProgressBar" name="progressBar_P2">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>21</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QProgressBar {
 background-color:qlineargradient(spread:pad, x1:0, y1:0.46, x2:1, y2:0.44, stop:0.1 rgba(34, 180, 246, 255), stop:0.55 rgba(239, 203, 99, 255),stop:0.71 rgba(239, 203, 99, 255), stop:1 rgba(255, 14, 0, 255));
@@ -1681,6 +1821,18 @@ border-radius :7px;
           <property name="enabled">
            <bool>true</bool>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>21</height>
+           </size>
+          </property>
           <property name="styleSheet">
            <string notr="true">QProgressBar {
 background-color:qlineargradient(spread:pad, x1:0, y1:0.46, x2:1, y2:0.44, stop:0.1 rgba(34, 180, 246, 255), stop:0.55 rgba(239, 203, 99, 255),stop:0.71 rgba(239, 203, 99, 255), stop:1 rgba(255, 14, 0, 255));
@@ -1727,6 +1879,18 @@ border-radius :7px;
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
          <widget class="QPushButton" name="pushButton_settings">
+          <property name="minimumSize">
+           <size>
+            <width>130</width>
+            <height>26</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>130</width>
+            <height>26</height>
+           </size>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -1734,10 +1898,28 @@ border-radius :7px;
            <iconset resource="resources.qrc">
             <normaloff>:/icons/icons/icons8-automatic-100.png</normaloff>:/icons/icons/icons8-automatic-100.png</iconset>
           </property>
+          <property name="iconSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_About">
+          <property name="minimumSize">
+           <size>
+            <width>130</width>
+            <height>26</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>130</width>
+            <height>26</height>
+           </size>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -1745,16 +1927,40 @@ border-radius :7px;
            <iconset resource="resources.qrc">
             <normaloff>:/icons/icons/icons8-book-100.png</normaloff>:/icons/icons/icons8-book-100.png</iconset>
           </property>
+          <property name="iconSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pushButton_disVolume">
+          <property name="minimumSize">
+           <size>
+            <width>130</width>
+            <height>26</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>130</width>
+            <height>26</height>
+           </size>
+          </property>
           <property name="text">
            <string>Выкл. звук</string>
           </property>
           <property name="icon">
            <iconset resource="resources.qrc">
             <normaloff>:/icons/icons/icons8-no-audio-100.png</normaloff>:/icons/icons/icons8-no-audio-100.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
           </property>
          </widget>
         </item>
