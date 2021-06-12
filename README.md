@@ -1,8 +1,8 @@
 # Приложение по управлению установкой VN3000
 ![GUI](https://github.com/Oerdna/VN3000/blob/master/doc/GUI.png?raw=true)
 
-## Применение
-Запустить `mainVn.py`
+## Мотивация
+ПО производителя устарело и неадекватно работает на новых операционных системах, поэтому потребовалось создать новую программу для управления установкой.
 
 ## VN3000
 Basic App for the older installation make by Rus - Ukr factory. These installations are few in number and may have different firmware, as well as accessories.
@@ -43,7 +43,15 @@ The installation has a pressure indication system in the working volume in the r
 - PyQt 5.13
 - USB-CANmodul2 SYS TEC electronic 
 
+
 Подробнее на вики [странице](https://github.com/Oerdna/VN3000/wiki)
+
+***
+Что требуется доработать:
+- Доделать контроль над RF блоком.
+- Создать функцию контроля расхода реактивного и инертнего газа.
+- Создать функцию удеражания КБВ для RF магнетрона.
+- Создать отдельный модуль для считвания давления со сторонних вакууметров [Wide Range Gauge](https://shop.edwardsvacuum.com/products/r60/list.aspx).
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
